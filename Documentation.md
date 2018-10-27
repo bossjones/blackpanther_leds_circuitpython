@@ -1,3 +1,6 @@
+# Annotated codebase
+
+```
 import sys
 import time
 import board
@@ -6,6 +9,15 @@ import brightly
 from digitalio import DigitalInOut, Direction, Pull
 
 import math
+
+# -----------------------------------------------------------------------------
+# INFO: Why are hexadecimal numbers prefixed with 0x?
+# SOURCE: https://stackoverflow.com/questions/2670639/why-are-hexadecimal-numbers-prefixed-with-0x
+# Short story: The 0 tells the parser it's dealing with a constant (and not an identifier/reserved word). Something is still needed to specify the number base: the x is an arbitrary choice.
+# Long story: In the 60's, the prevalent programming number systems were decimal and octal — mainframes had 12, 24 or 36 bits per byte, which is nicely divisible by 3 = log2(8).
+# -----------------------------------------------------------------------------
+
+# NOTE: circuit express is little endian!!!
 
 # SOURCE: https://learn.adafruit.com/circuitpython-essentials/circuitpython-analog-in
 # ----- analog info ----
@@ -17,19 +29,20 @@ DEBUG_MODE = False
 
 MAX_ANALOG_VALUE = 65536
 
+
 def get_voltage(pin):
     """ Get value from analog sensor and convert it to a 0-3.3V voltage reading """
     return (pin.value * 3.3) / MAX_ANALOG_VALUE
+
+
 # ------- analog info ---- [end]
 
 # # SOURCE: https://learn.adafruit.com/circuitpython-essentials/circuitpython-digital-in-out
 # # -------------------------------------------------------------
 # # NOTE: A DigitalInOut is used to digitally control I/O pins.
-# Create a new DigitalInOut object associated with the pin.
-# Defaults to input with no pull. Use switch_to_input() and switch_to_output() to change the direction.
 led = DigitalInOut(
     board.D13
-)
+)  # Create a new DigitalInOut object associated with the pin. Defaults to input with no pull. Use switch_to_input() and switch_to_output() to change the direction.
 
 led.direction = Direction.OUTPUT
 
@@ -37,6 +50,7 @@ switch = DigitalInOut(board.D7)  # For Circuit Playground Express
 
 switch.direction = Direction.INPUT
 
+# EXAMPLE: So why pull-ups and not pull-downs? There are likely several reasons for it, but when wiring buttons or switches or anything "normally open", you only have to tie them to ground, you don't need to run +5V out to them. Since most boards are going to be designed with large ground pours for shielding reasons anyway, tying to ground is practically reasons.
 switch.pull = Pull.UP
 # # -------------------------------------------------------------
 
@@ -126,11 +140,11 @@ MAX_PIXEL_VALUE = 256
 #     return hexColor
 
 
-# def vibranium_effect():
-#     # NOTE: These 2 create the pulse effect [---begin----]
-#     brightly.smooth_change_to(BLACK_PANTHER_PURPLE)
-#     brightly.smooth_change_to(BLACK_PANTHER_NOTHING)
-#     # NOTE: These 2 create the pulse effect [---end----]
+def vibranium_effect():
+    # NOTE: These 2 create the pulse effect [---begin----]
+    brightly.smooth_change_to(BLACK_PANTHER_PURPLE)
+    brightly.smooth_change_to(BLACK_PANTHER_NOTHING)
+    # NOTE: These 2 create the pulse effect [---end----]
 
 
 # SOURCE: [NOT THIS] https://learn.adafruit.com/hacking-ikea-lamps-with-circuit-playground-express/generate-your-colors#wheel-explained
@@ -162,44 +176,44 @@ def wheel(pos):
     return (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
 
 
-# # SOURCE: https://circuitpython.readthedocs.io/projects/neopixel/en/latest/examples.html
-# def rainbow_cycle(wait):
-#     for j in range(255):
-#         for i in range(num_pixels):
-#             pixel_index = (i * 256 // num_pixels) + j
-#             pixels[i] = wheel(pixel_index & 255)
-#         pixels.show()
-#         time.sleep(wait)
+# SOURCE: https://circuitpython.readthedocs.io/projects/neopixel/en/latest/examples.html
+def rainbow_cycle(wait):
+    for j in range(255):
+        for i in range(num_pixels):
+            pixel_index = (i * 256 // num_pixels) + j
+            pixels[i] = wheel(pixel_index & 255)
+        pixels.show()
+        time.sleep(wait)
 
 
-# # def showStrip():
-# #     pixels.show()
+# def showStrip():
+#     pixels.show()
 
 
-# # def setPixel(position, rgb):
-# #     pixels[position] = rgb
-# #     time.sleep(0.1)
+# def setPixel(position, rgb):
+#     pixels[position] = rgb
+#     time.sleep(0.1)
 
 
-# # def setAll(rgb):
-# #     pixels.fill(rgb)
-# #     time.sleep(0.1)
+# def setAll(rgb):
+#     pixels.fill(rgb)
+#     time.sleep(0.1)
 
 
-# # def setAllGreen():
-# #     pixels.fill((0, 255, 0))
-# #     time.sleep(0.1)
+# def setAllGreen():
+#     pixels.fill((0, 255, 0))
+#     time.sleep(0.1)
 
 
-# # # NOTE: Bossjones custom
-# # def enableSensorPlot():
-# #     print((get_voltage(analog_in),))
-# #     time.sleep(0.1)
+# # NOTE: Bossjones custom
+# def enableSensorPlot():
+#     print((get_voltage(analog_in),))
+#     time.sleep(0.1)
 
 
-# # def setEveryOtherPixel(color=RED):
-# #     pixels[::2] = [color] * (len(pixels) // 2)
-# #     time.sleep(2)
+# def setEveryOtherPixel(color=RED):
+#     pixels[::2] = [color] * (len(pixels) // 2)
+#     time.sleep(2)
 
 
 # ----------------[ARDUINO VERSIONS - DEFAULT WRAPPER FUNCTION ]------------
@@ -342,6 +356,7 @@ def _FadeInOut(red, green, blue):
 
         k = k - 2
 
+
 def _RunningLights(red, green, blue, WaveDelay):
     """[summary]
 
@@ -356,39 +371,19 @@ def _RunningLights(red, green, blue, WaveDelay):
 
     i = 0
     DOUBLE_NUM_PIXELS = num_pixels * 2
-
     while i < DOUBLE_NUM_PIXELS:
-        if DEBUG_MODE:
-            print("INSIDE: _RunningLights FIRST LOOP: i={}".format(i))
         position = position + 1  # = 0; #Position + Rate;
-
-        j = 0
-        while j < num_pixels:
-            # NOTE: From orig
-            # sine wave, 3 offset waves make a rainbow!
-            # float level = sin(i+Position) * 127 + 128
-            # setPixel(i, level, 0, 0)
-            # float level = sin(i+Position) * 127 + 128
-
-            r = ((math.sin(j + position) * 127 + 128) / 255) * red
-            g = ((math.sin(j + position) * 127 + 128) / 255) * green
-            b = ((math.sin(j + position) * 127 + 128) / 255) * blue
-
-            if DEBUG_MODE:
-                print("INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
-
+        while i < num_pixels:
             _setPixel(
-                j,
-                r,
-                g,
-                b,
+                i,
+                ((math.sin(i + position) * 127 + 128) / 255) * red,
+                ((math.sin(i + position) * 127 + 128) / 255) * green,
+                ((math.sin(i + position) * 127 + 128) / 255) * blue,
             )
-
-            j = j + 1
+            i = i + 1
 
         _showStrip()
         _delay(WaveDelay)
-        i = i + 1
 
 
 # i = 0
@@ -411,3 +406,5 @@ while True:
     # _FadeInOut(0xff, 0x77, 0x00)
 
     _RunningLights(0xff, 0xff, 0x00, 50)
+
+```
