@@ -15,7 +15,7 @@ from digitalio import DigitalInOut, Direction, Pull
 
 
 DEBUG_MODE = False
-MAX_NUMBER_OF_ANIMATION_STATES = 3
+MAX_NUMBER_OF_ANIMATION_STATES = 4
 
 # On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
 # Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
@@ -173,6 +173,32 @@ def _RunningLights(red, green, blue, WaveDelay):
         i = i + 1
 
 
+def _colorWipe(red, green, blue, WaveDelay):
+    """[ColorWipe animation from tweaking4all]
+    """
+    k = 0
+    while k < num_pixels:
+        if DEBUG_MODE:
+            print("BEFORE - INSIDE: _colorWipe FIRST LOOP: k={}".format(k))
+            print(
+                "BEFORE - INSIDE: _colorWipe FIRST LOOP: red={}, green={}, blue={}".format(
+                    red, green, blue
+                )
+            )
+
+        _setPixel(
+            k,
+            red,
+            green,
+            blue,
+        )
+
+        _showStrip()
+        _delay(WaveDelay)
+
+        k = k + 1
+
+
 # BUTTON REGISTER
 button = DigitalInOut(board.BUTTON_A)
 button.direction = Direction.INPUT
@@ -212,8 +238,13 @@ try:
         elif ledmode == 2:
             _RunningLights(141, 0, 155, 50)
 
-        # STATE: OFF
+        # STATE: ColorWipe Purple
         elif ledmode == 3:
+            _colorWipe(141, 0, 155, 50)
+            _colorWipe(0, 0, 0, 50)
+
+        # STATE: OFF
+        elif ledmode == 4:
             _setAll(0, 0, 0)
 
         time.sleep(0.01)
