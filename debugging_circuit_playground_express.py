@@ -15,7 +15,7 @@ from digitalio import DigitalInOut, Direction, Pull
 
 
 DEBUG_MODE = False
-MAX_NUMBER_OF_ANIMATION_STATES = 2
+MAX_NUMBER_OF_ANIMATION_STATES = 3
 
 # On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
 # Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
@@ -204,11 +204,16 @@ try:
         # save button press state
         prevkeystate = currkeystate
 
-        # black panther solid colors on
+        # STATE: black panther solid colors on
         if ledmode == 1:
             _setAll(141, 0, 155)
-        # OFF
+
+        # STATE: BP Running purple lights
         elif ledmode == 2:
+            _RunningLights(141, 0, 155, 50)
+
+        # STATE: OFF
+        elif ledmode == 3:
             _setAll(0, 0, 0)
 
         time.sleep(0.01)
