@@ -8,11 +8,14 @@ import neopixel
 import time
 
 import board
+import math
 
 import digitalio
 from digitalio import DigitalInOut, Direction, Pull
 
-DEBUG_MODE = True
+
+DEBUG_MODE = False
+MAX_NUMBER_OF_ANIMATION_STATES = 2
 
 # On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
 # Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
@@ -111,10 +114,73 @@ def _setAll(r, g, b):
     _showStrip()
 
 
+def shortkeypress(color_palette):
+    color_palette += 1
+
+    if color_palette > MAX_NUMBER_OF_ANIMATION_STATES:
+        color_palette = 1
+
+    return color_palette
+
+
+def _RunningLights(red, green, blue, WaveDelay):
+    """[summary]
+
+    Arguments:
+        red {int} -- [hex representation of color red]
+        green {int} -- [hex representation of color green]
+        blue {int} -- [hex representation of color blue]
+        WaveDelay {int} -- [time to delay animation, in seconds (will be converted to miliseconds)]
+    """
+
+    position = 0
+
+    i = 0
+    DOUBLE_NUM_PIXELS = num_pixels * 2
+
+    while i < DOUBLE_NUM_PIXELS:
+        if DEBUG_MODE:
+            print("INSIDE: _RunningLights FIRST LOOP: i={}".format(i))
+        position = position + 1  # = 0; #Position + Rate;
+
+        j = 0
+        while j < num_pixels:
+            # NOTE: From orig
+            # sine wave, 3 offset waves make a rainbow!
+            # float level = sin(i+Position) * 127 + 128
+            # setPixel(i, level, 0, 0)
+            # float level = sin(i+Position) * 127 + 128
+
+            r = ((math.sin(j + position) * 127 + 128) / 255) * red
+            g = ((math.sin(j + position) * 127 + 128) / 255) * green
+            b = ((math.sin(j + position) * 127 + 128) / 255) * blue
+
+            if DEBUG_MODE:
+                print(
+                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
+
+            _setPixel(
+                j,
+                r,
+                g,
+                b,
+            )
+
+            j = j + 1
+
+        _showStrip()
+        _delay(WaveDelay)
+        i = i + 1
+
+
 # BUTTON REGISTER
 button = DigitalInOut(board.BUTTON_A)
 button.direction = Direction.INPUT
 button.pull = Pull.DOWN
+# BUTTON STATES
+prevkeystate = False
+ledmode = 0  # button press counter, switch color palettes
+
 
 # dump(board)
 
@@ -128,10 +194,21 @@ try:
 
         _showStrip()
 
-        if button.value:  # button is pushed
+        # check for button press
+        currkeystate = button.value
+
+        # button press, move to next pattern
+        if (prevkeystate is not True) and currkeystate:
+            ledmode = shortkeypress(ledmode)
+
+        # save button press state
+        prevkeystate = currkeystate
+
+        # black panther solid colors on
+        if ledmode == 1:
             _setAll(141, 0, 155)
-        else:
-            # led.value = False
+        # OFF
+        elif ledmode == 2:
             _setAll(0, 0, 0)
 
         time.sleep(0.01)
