@@ -17,10 +17,12 @@ DEBUG_MODE = False
 
 MAX_ANALOG_VALUE = 65536
 
+
 def get_voltage(pin):
     """ Get value from analog sensor and convert it to a 0-3.3V voltage reading """
     return (pin.value * 3.3) / MAX_ANALOG_VALUE
 # ------- analog info ---- [end]
+
 
 # # SOURCE: https://learn.adafruit.com/circuitpython-essentials/circuitpython-digital-in-out
 # # -------------------------------------------------------------
@@ -241,7 +243,8 @@ def _setPixel(position, r, g, b):
     if type(g) == float:
         g = int(g)
 
-    _rgb = (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
+    _rgb = (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (
+        r, g, b, 0)
     pixels[position] = _rgb
     # time.sleep(0.1)
 
@@ -342,6 +345,7 @@ def _FadeInOut(red, green, blue):
 
         k = k - 2
 
+
 def _RunningLights(red, green, blue, WaveDelay):
     """[summary]
 
@@ -375,7 +379,8 @@ def _RunningLights(red, green, blue, WaveDelay):
             b = ((math.sin(j + position) * 127 + 128) / 255) * blue
 
             if DEBUG_MODE:
-                print("INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
+                print(
+                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
 
             _setPixel(
                 j,
