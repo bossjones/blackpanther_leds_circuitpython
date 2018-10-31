@@ -37,7 +37,7 @@ leds = {
         "led_object": None,
     },
     # "left_middle": {},
-    
+
     # "right_rib": {},
     # "right_chest": {},
     # "right_abs": {},
@@ -79,6 +79,30 @@ pixels = left_rib_pixel_strip
 
 # source: http://blender.stackexchange.com/questions/1879/is-it-possible-to-dump-an-objects-properties-and-methods
 
+# NOTE: Use this guy to initialize neopixel objects and add them to our dictonary lookup
+def create_neopixel_objects(device=None):
+    # if device object exists
+    if device in leds:
+        _neopixel_obj = neopixel.NeoPixel(
+            leds[device]["data_pin"],
+            leds[device]["num_pixels"],
+            brightness=leds[device]["brightness_lvl"],
+            auto_write=False,
+            pixel_order=leds[device]["order"],
+        )
+
+        # Add neopixel object to dict
+        leds[device]["led_object"] = _neopixel_obj
+
+# TODO: Add the other devices
+# SETUP
+create_neopixel_objects(device="left_rib")
+
+# OLD VALUES
+# DEBUG_MODE = False
+# MAX_NUMBER_OF_ANIMATION_STATES = 5
+DEBUG_MODE = False
+MAX_NUMBER_OF_ANIMATION_STATES = len(leds)
 
 def dump(obj):
     for attr in dir(obj):
@@ -97,18 +121,18 @@ def _delay(time_in_seconds):
     time.sleep(to_ms)
 
 # FIXME: add argument device=None
-def _showStrip(device=left_rib_pixel_strip):
+def _showStrip(device=None):
     """[Arduino version of showStrip, taken from tweaking4all]
 
     Arguments:
         component {ANY} -- [EG. NeoPixel object, like 'left_rib_pixel_strip']
     """
-    # Get device object (Usually of type NeoPixel) 
+    # Get device object (Usually of type NeoPixel)
     device = leds[device]["led_object"]
     device.show()
 
 # FIXME: add argument device=None
-def _setPixel(position, r, g, b):
+def _setPixel(position, r, g, b, device=None):
     """[Arduino version of setPixel(), taken from tweaking4all]
 
     Arguments:
@@ -129,15 +153,15 @@ def _setPixel(position, r, g, b):
     if type(g) == float:
         g = int(g)
 
-    # FIXME: replace ORDER with leds[<DEVICE>]["order"]
-    _rgb = (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (
+    _rgb = (r, g, b) if leds[device]["order"] == neopixel.RGB or leds[device]["order"] == neopixel.GRB else (
         r, g, b, 0)
-    # FIXME: replace pixels with leds[<DEVICE>]["led_object"]
-    pixels[position] = _rgb  
+
+    pixels = leds[device]["led_object"]
+    pixels[position] = _rgb
     # time.sleep(0.1)
 
 # FIXME: add argument device=None
-def _setAll(r, g, b):
+def _setAll(r, g, b, device=None):
     """[Arduino version of setAll(), taken from tweaking4all]
 
     Arguments:
@@ -146,11 +170,11 @@ def _setAll(r, g, b):
         b {[type]} -- [description]
     """
 
+    num_pixels = leds[device]["num_pixels"]
+
     for i in range(num_pixels):
-        # FIXME: add argument device=device
-        _setPixel(i, r, g, b)
-    # FIXME: add argument device=device
-    _showStrip()
+        _setPixel(i, r, g, b, device=device)
+    _showStrip(device=device)
 
 
 def shortkeypress(color_palette):
@@ -176,7 +200,7 @@ def _RunningLights(red, green, blue, WaveDelay):
 
     i = 0
 
-    # FIXME: replace num_pixels with leds[<DEVICE>]["num_pixels"]
+    # FIXME: replace num_pixels with leds[device]["num_pixels"]
     DOUBLE_NUM_PIXELS = num_pixels * 2
 
     while i < DOUBLE_NUM_PIXELS:
@@ -185,7 +209,7 @@ def _RunningLights(red, green, blue, WaveDelay):
         position = position + 1  # = 0; #Position + Rate;
 
         j = 0
-        # FIXME: replace num_pixels with leds[<DEVICE>]["num_pixels"]
+        # FIXME: replace num_pixels with leds[device]["num_pixels"]
         while j < num_pixels:
             # NOTE: From orig
             # sine wave, 3 offset waves make a rainbow!
