@@ -1,4 +1,3 @@
-# Note, this version ONLY works with the lift rib version
 import sys
 import os
 
@@ -13,6 +12,19 @@ import math
 
 import digitalio
 from digitalio import DigitalInOut, Direction, Pull
+
+import gc
+
+gc.collect()
+
+def memorySnapshot(location=None):
+    if location:
+        print("Location: {}".format(location))
+
+    print('Free memory: {}'.format(gc.mem_free()))
+    print('Allocated memory: {}'.format(gc.mem_alloc()))
+
+memorySnapshot()
 
 leds = {
     "left_rib": {
@@ -287,6 +299,8 @@ def _fadeToBlack(ledNo, fadeValue, device=None):
         device=device,
     )
 
+memorySnapshot()
+
 # BUTTON REGISTER
 button = DigitalInOut(board.BUTTON_A)
 button.direction = Direction.INPUT
@@ -295,11 +309,7 @@ button.pull = Pull.DOWN
 prevkeystate = False
 ledmode = 0  # button press counter, switch color palettes
 
-# dump(board)
-
-# dump(left_rib_data_pin)
-
-# dump(button)
+memorySnapshot()
 
 
 # TODO: Add the other devices
