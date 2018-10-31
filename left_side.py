@@ -32,7 +32,7 @@ def memorySnapshot(location=None):
           )  # pylint: disable=E1101
     print("Memory Info:")  # pylint: disable=E1101
     print('-----------------------------')
-    micropython.mem_info()
+    micropython.mem_info(1)
     print('-----------------------------')
     print("\n")
 
@@ -44,17 +44,17 @@ memorySnapshot(location="After func memorySnapshot defined")
 # SOURCE: http://deeplearning.net/software/theano/tutorial/python-memory-management.html
 
 
-def show_sizeof(x, level=0):
+# def show_sizeof(x, level=0):
 
-    print("\t" * level, x.__class__, sys.getsizeof(x), x)
+#     print("\t" * level, x.__class__, sys.getsizeof(x), x)
 
-    if hasattr(x, '__iter__'):
-        if hasattr(x, 'items'):
-            for xx in x.items():
-                show_sizeof(xx, level + 1)
-        else:
-            for xx in x:
-                show_sizeof(xx, level + 1)
+#     if hasattr(x, '__iter__'):
+#         if hasattr(x, 'items'):
+#             for xx in x.items():
+#                 show_sizeof(xx, level + 1)
+#         else:
+#             for xx in x:
+#                 show_sizeof(xx, level + 1)
 
 # NOTE: Use this guy to initialize neopixel objects and add them to our dictonary lookup
 
@@ -76,6 +76,8 @@ def create_neopixel_objects(device=None):
 
 gc.collect()
 
+memorySnapshot(location="After func create_neopixel_objects defined")
+
 # # source: http://blender.stackexchange.com/questions/1879/is-it-possible-to-dump-an-objects-properties-and-methods
 
 
@@ -96,6 +98,8 @@ def _delay(time_in_seconds):
 
 gc.collect()
 
+memorySnapshot(location="After func _delay defined")
+
 
 def _showStrip(device=None):
     """[Arduino version of showStrip, taken from tweaking4all]
@@ -109,6 +113,8 @@ def _showStrip(device=None):
 
 
 gc.collect()
+
+memorySnapshot(location="After func _showStrip defined")
 
 
 def _setPixel(position, r, g, b, device=None):
@@ -146,6 +152,8 @@ def _setPixel(position, r, g, b, device=None):
 
 gc.collect()
 
+memorySnapshot(location="After func _setPixel defined")
+
 
 def _setAll(r, g, b, device=None):
     """[Arduino version of setAll(), taken from tweaking4all]
@@ -165,6 +173,8 @@ def _setAll(r, g, b, device=None):
 
 gc.collect()
 
+memorySnapshot(location="After func _setAll defined")
+
 
 def shortkeypress(color_palette):
     color_palette += 1
@@ -176,6 +186,8 @@ def shortkeypress(color_palette):
 
 
 gc.collect()
+
+memorySnapshot(location="After func shortkeypress defined")
 
 # def _RunningLights(red, green, blue, WaveDelay, device=None):
 #     """[summary]
