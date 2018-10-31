@@ -1,3 +1,7 @@
+# TODO: Try making things into classes
+
+https://github.com/mikepschneider/circuitpy_ms/blob/1242a96171f5b436f53807b7a6893315022f292b/CIRCUITPY/demorunner.py
+
 # How to read symbols from micropython.mem_info(1)
 
 Symbol | Meaning
@@ -267,3 +271,10 @@ http://www.davehylands.com
 ```
 
 SOURCE: https://github.com/micropython/micropython/issues/2057
+
+
+# Performance Tips
+- [PythonSpeed - PerformanceTips](https://wiki.python.org/moin/PythonSpeed/PerformanceTips)
+- [Variables and scope](https://python-textbok.readthedocs.io/en/1.0/Variables_and_Scope.html)
+- [Understand How Much Memory Your Python Objects Use](https://code.tutsplus.com/tutorials/understand-how-much-memory-your-python-objects-use--cms-25609)
+- [Python Memory Management](http://deeplearning.net/software/theano_versions/0.8.X/tutorial/python-memory-management.html)
