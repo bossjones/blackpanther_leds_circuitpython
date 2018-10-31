@@ -1,30 +1,31 @@
+import gc
+import micropython
 import sys
 import os
-
 import random
 import board
 import neopixel
-
 import time
-
-import board
 import math
-
-import digitalio
 from digitalio import DigitalInOut, Direction, Pull
-
-import gc
 
 gc.collect()
 
+DEBUG_MODE = False
+MAX_NUMBER_OF_ANIMATION_STATES = 5
 
 def memorySnapshot(location=None):
     if location:
         print("Location: {}".format(location))
 
-    print("Free memory: {}".format(gc.mem_free()))
-    print("Allocated memory: {}".format(gc.mem_alloc()))
+    print("Free memory: {}".format(gc.mem_free()))  # pylint: disable=maybe-no-member
+    print("Allocated memory: {}".format(gc.mem_alloc()))  # pylint: disable=maybe-no-member
+    print("Stack Use: {}".format(micropython.stack_use()))  # pylint: disable=maybe-no-member
+    print("Memory Info: {}".format(micropython.mem_info()))  # pylint: disable=maybe-no-member
+    print('-----------------------------')
+    micropython.mem_info(1)
 
+gc.collect()
 
 memorySnapshot()
 
@@ -63,10 +64,6 @@ leds = {
     # "right_middle": {},
 }
 
-
-DEBUG_MODE = False
-MAX_NUMBER_OF_ANIMATION_STATES = 5
-
 # NOTE: Use this guy to initialize neopixel objects and add them to our dictonary lookup
 def create_neopixel_objects(device=None):
     # if device object exists
@@ -82,15 +79,15 @@ def create_neopixel_objects(device=None):
         # Add neopixel object to dict
         leds[device]["led_object"] = _neopixel_obj
 
+gc.collect()
 
-# source: http://blender.stackexchange.com/questions/1879/is-it-possible-to-dump-an-objects-properties-and-methods
+# # source: http://blender.stackexchange.com/questions/1879/is-it-possible-to-dump-an-objects-properties-and-methods
 
 
-def dump(obj):
-    for attr in dir(obj):
-        if hasattr(obj, attr):
-            print("obj.%s = %s" % (attr, getattr(obj, attr)))
-
+# def dump(obj):
+#     for attr in dir(obj):
+#         if hasattr(obj, attr):
+#             print("obj.%s = %s" % (attr, getattr(obj, attr)))
 
 def _delay(time_in_seconds):
     """[Perform a time sleep in miliseconds.]
@@ -102,6 +99,7 @@ def _delay(time_in_seconds):
     to_ms = float(time_in_seconds / 1000)
     time.sleep(to_ms)
 
+gc.collect()
 
 def _showStrip(device=None):
     """[Arduino version of showStrip, taken from tweaking4all]
@@ -113,6 +111,7 @@ def _showStrip(device=None):
     device = leds[device]["led_object"]
     device.show()
 
+gc.collect()
 
 def _setPixel(position, r, g, b, device=None):
     """[Arduino version of setPixel(), taken from tweaking4all]
@@ -146,6 +145,7 @@ def _setPixel(position, r, g, b, device=None):
     pixels[position] = _rgb
     # time.sleep(0.1)
 
+gc.collect()
 
 def _setAll(r, g, b, device=None):
     """[Arduino version of setAll(), taken from tweaking4all]
@@ -162,6 +162,7 @@ def _setAll(r, g, b, device=None):
         _setPixel(i, r, g, b, device=device)
     _showStrip(device=device)
 
+gc.collect()
 
 def shortkeypress(color_palette):
     color_palette += 1
@@ -171,54 +172,56 @@ def shortkeypress(color_palette):
 
     return color_palette
 
+gc.collect()
 
-def _RunningLights(red, green, blue, WaveDelay, device=None):
-    """[summary]
+# def _RunningLights(red, green, blue, WaveDelay, device=None):
+#     """[summary]
 
-    Arguments:
-        red {int} -- [hex representation of color red]
-        green {int} -- [hex representation of color green]
-        blue {int} -- [hex representation of color blue]
-        WaveDelay {int} -- [time to delay animation, in seconds (will be converted to miliseconds)]
-    """
-    num_pixels = leds[device]["num_pixels"]
+#     Arguments:
+#         red {int} -- [hex representation of color red]
+#         green {int} -- [hex representation of color green]
+#         blue {int} -- [hex representation of color blue]
+#         WaveDelay {int} -- [time to delay animation, in seconds (will be converted to miliseconds)]
+#     """
+#     num_pixels = leds[device]["num_pixels"]
 
-    position = 0
+#     position = 0
 
-    i = 0
-    DOUBLE_NUM_PIXELS = num_pixels * 2
-    while i < DOUBLE_NUM_PIXELS:
-        if DEBUG_MODE:
-            print("INSIDE: _RunningLights FIRST LOOP: i={}".format(i))
-        position = position + 1  # = 0; #Position + Rate;
+#     i = 0
+#     DOUBLE_NUM_PIXELS = num_pixels * 2
+#     while i < DOUBLE_NUM_PIXELS:
+#         if DEBUG_MODE:
+#             print("INSIDE: _RunningLights FIRST LOOP: i={}".format(i))
+#         position = position + 1  # = 0; #Position + Rate;
 
-        j = 0
-        while j < num_pixels:
-            # NOTE: From orig
-            # sine wave, 3 offset waves make a rainbow!
-            # float level = sin(i+Position) * 127 + 128
-            # setPixel(i, level, 0, 0)
-            # float level = sin(i+Position) * 127 + 128
+#         j = 0
+#         while j < num_pixels:
+#             # NOTE: From orig
+#             # sine wave, 3 offset waves make a rainbow!
+#             # float level = sin(i+Position) * 127 + 128
+#             # setPixel(i, level, 0, 0)
+#             # float level = sin(i+Position) * 127 + 128
 
-            r = ((math.sin(j + position) * 127 + 128) / 255) * red
-            g = ((math.sin(j + position) * 127 + 128) / 255) * green
-            b = ((math.sin(j + position) * 127 + 128) / 255) * blue
+#             r = ((math.sin(j + position) * 127 + 128) / 255) * red
+#             g = ((math.sin(j + position) * 127 + 128) / 255) * green
+#             b = ((math.sin(j + position) * 127 + 128) / 255) * blue
 
-            if DEBUG_MODE:
-                print(
-                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(
-                        r, g, b
-                    )
-                )
+#             if DEBUG_MODE:
+#                 print(
+#                     "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(
+#                         r, g, b
+#                     )
+#                 )
 
-            _setPixel(j, r, g, b, device=device)
+#             _setPixel(j, r, g, b, device=device)
 
-            j = j + 1
+#             j = j + 1
 
-        _showStrip(device=device)
-        _delay(WaveDelay)
-        i = i + 1
+#         _showStrip(device=device)
+#         _delay(WaveDelay)
+#         i = i + 1
 
+gc.collect()
 
 def _colorWipe(red, green, blue, WaveDelay, device=None):
     """[ColorWipe animation from tweaking4all]
@@ -242,6 +245,7 @@ def _colorWipe(red, green, blue, WaveDelay, device=None):
 
         k = k + 1
 
+gc.collect()
 
 # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
 def _meteorRain(
@@ -281,6 +285,7 @@ def _meteorRain(
         _delay(speedDelay)
         i = i + 1
 
+gc.collect()
 
 def _fadeToBlack(ledNo, fadeValue, device=None):
     pixels = leds[device]["led_object"]
@@ -309,6 +314,7 @@ def _fadeToBlack(ledNo, fadeValue, device=None):
 
     _setPixel(ledNo, r, g, b, device=device)
 
+gc.collect()
 
 memorySnapshot()
 
@@ -321,7 +327,6 @@ prevkeystate = False
 ledmode = 0  # button press counter, switch color palettes
 
 memorySnapshot()
-
 
 # TODO: Add the other devices
 # SETUP
@@ -340,6 +345,8 @@ try:
         for l in leds:
             _showStrip(device=l)
 
+        # _showStrip(device="left_rib")
+
         # check for button press
         currkeystate = button.value
 
@@ -354,9 +361,9 @@ try:
         if ledmode == 1:
             _setAll(141, 0, 155, device="left_rib")
 
-        # STATE: BP Running purple lights
-        elif ledmode == 2:
-            _RunningLights(141, 0, 155, 50, device="left_rib")
+        # # STATE: BP Running purple lights
+        # elif ledmode == 2:
+        #     _RunningLights(141, 0, 155, 50, device="left_rib")
 
         # STATE: ColorWipe Purple
         elif ledmode == 3:
