@@ -50,7 +50,9 @@ leds = {
     # "right_middle": {},
 }
 
-# source: http://blender.stackexchange.com/questions/1879/is-it-possible-to-dump-an-objects-properties-and-methods
+
+DEBUG_MODE = False
+MAX_NUMBER_OF_ANIMATION_STATES = 5
 
 # NOTE: Use this guy to initialize neopixel objects and add them to our dictonary lookup
 def create_neopixel_objects(device=None):
@@ -67,8 +69,7 @@ def create_neopixel_objects(device=None):
         # Add neopixel object to dict
         leds[device]["led_object"] = _neopixel_obj
 
-DEBUG_MODE = False
-MAX_NUMBER_OF_ANIMATION_STATES = 5
+# source: http://blender.stackexchange.com/questions/1879/is-it-possible-to-dump-an-objects-properties-and-methods
 
 def dump(obj):
     for attr in dir(obj):
