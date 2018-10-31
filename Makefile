@@ -13,3 +13,6 @@ repl: connect-to-repl
 debug:
 	@echo "DEVICENAME $(DEVICENAME)"
 	@echo "BAUD_RATE $(BAUD_RATE)"
+
+cp-screenrc:
+	cp ./contrib/.screenrc ~/.screenrc
