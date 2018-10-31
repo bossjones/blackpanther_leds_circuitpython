@@ -22,20 +22,20 @@ leds = {
         "brightness_lvl": 0.2,
         "led_object": None,
     },
-    "left_chest": {
-        "data_pin": board.NEOPIXEL,
-        "num_pixels": 10,
-        "order": neopixel.GRB,
-        "brightness_lvl": 0.2,
-        "led_object": None,
-    },
-    "left_abs": {
-        "data_pin": board.A2,
-        "num_pixels": 8,
-        "order": neopixel.GRB,
-        "brightness_lvl": 0.2,
-        "led_object": None,
-    },
+    # "left_chest": {
+    #     "data_pin": board.NEOPIXEL,
+    #     "num_pixels": 10,
+    #     "order": neopixel.GRB,
+    #     "brightness_lvl": 0.2,
+    #     "led_object": None,
+    # },
+    # "left_abs": {
+    #     "data_pin": board.A2,
+    #     "num_pixels": 8,
+    #     "order": neopixel.GRB,
+    #     "brightness_lvl": 0.2,
+    #     "led_object": None,
+    # },
     # "left_middle": {},
 
     # "right_rib": {},
@@ -293,6 +293,8 @@ def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDeca
         i = i + 1
 
 def _fadeToBlack(ledNo, fadeValue, device=None):
+    pixels = leds[device]["led_object"]
+
     oldColor = pixels[ledNo]
 
     # What do 0LL or 0x0UL mean?
@@ -313,12 +315,12 @@ def _fadeToBlack(ledNo, fadeValue, device=None):
         print(
             "INSIDE: _fadeToBlack r,g,b after conversion: r={}, g={}, b={}".format(r, g, b))
 
-    # FIXME: add argument device=device
     _setPixel(
         ledNo,
         r,
         g,
         b,
+        device=device,
     )
 
 
@@ -340,9 +342,8 @@ ledmode = 0  # button press counter, switch color palettes
 # Mainloop
 try:
     while True:
-
-        # FIXME: add argument device=device ( do this for all the ones we want to activate, for every key in dictonary, _showStrip(device=key))
-        _showStrip()
+        for l in leds:
+            _showStrip(device=l)
 
         # check for button press
         currkeystate = button.value
@@ -356,25 +357,25 @@ try:
 
         # STATE: black panther solid colors on
         if ledmode == 1:
-            _setAll(141, 0, 155)
+            _setAll(141, 0, 155, device="left_rib")
 
         # STATE: BP Running purple lights
         elif ledmode == 2:
-            _RunningLights(141, 0, 155, 50)
+            _RunningLights(141, 0, 155, 50, device="left_rib")
 
         # STATE: ColorWipe Purple
         elif ledmode == 3:
-            _colorWipe(141, 0, 155, 50)
-            _colorWipe(0, 0, 0, 50)
+            _colorWipe(141, 0, 155, 50, device="left_rib")
+            _colorWipe(0, 0, 0, 50, device="left_rib")
 
         # STATE: MeteorRain
         # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
         elif ledmode == 4:
-            _meteorRain(141, 0, 155, 10, 64, True, 30)
+            _meteorRain(141, 0, 155, 10, 64, True, 30, device="left_rib")
 
         # STATE: OFF
         elif ledmode == 5:
-            _setAll(0, 0, 0)
+            _setAll(0, 0, 0, device="left_rib")
 
         time.sleep(0.01)
 
