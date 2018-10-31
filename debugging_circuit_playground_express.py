@@ -2,6 +2,7 @@
 import sys
 import os
 
+import random
 import board
 import neopixel
 
@@ -15,7 +16,7 @@ from digitalio import DigitalInOut, Direction, Pull
 
 
 DEBUG_MODE = False
-MAX_NUMBER_OF_ANIMATION_STATES = 4
+MAX_NUMBER_OF_ANIMATION_STATES = 5
 
 # On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
 # Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
@@ -198,6 +199,64 @@ def _colorWipe(red, green, blue, WaveDelay):
 
         k = k + 1
 
+# meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
+
+
+def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDecay, speedDelay):
+    _setAll(0, 0, 0)
+
+    DOUBLE_NUM_LEDS = num_pixels+num_pixels
+
+    i = 0
+    while i < DOUBLE_NUM_LEDS:
+
+        # fade brightness all LEDs one step
+        j = 0
+        while j < num_pixels:
+            if (not meteorRandomDecay) or (random.randint(0, 10) > 5):
+                _fadeToBlack(j, meteorTrailDecay)
+            j = j + 1
+
+        # draw meteor
+        j = 0
+        while j < meteorSize:
+            if (i-j < num_pixels) and (i-j >= 0):
+                _setPixel(i-j, red, green, blue)
+            j = j + 1
+
+        _showStrip()
+        _delay(speedDelay)
+        i = i + 1
+
+
+def _fadeToBlack(ledNo, fadeValue):
+    oldColor = pixels[ledNo]
+
+    # What do 0LL or 0x0UL mean?
+    # SOURCE: https://stackoverflow.com/questions/7036056/what-do-0ll-or-0x0ul-mean
+    r = float(oldColor[0])
+    g = float(oldColor[1])
+    b = float(oldColor[2])
+
+    if DEBUG_MODE:
+        print(
+            "INSIDE: _fadeToBlack r,g,b as floats: r={}, g={}, b={}".format(r, g, b))
+
+    r = (r <= 10) and 0 or int(r-(r*fadeValue/256))
+    g = (g <= 10) and 0 or int(g-(g*fadeValue/256))
+    b = (b <= 10) and 0 or int(b-(b*fadeValue/256))
+
+    if DEBUG_MODE:
+        print(
+            "INSIDE: _fadeToBlack r,g,b after conversion: r={}, g={}, b={}".format(r, g, b))
+
+    _setPixel(
+        ledNo,
+        r,
+        g,
+        b,
+    )
+
 
 # BUTTON REGISTER
 button = DigitalInOut(board.BUTTON_A)
@@ -243,8 +302,13 @@ try:
             _colorWipe(141, 0, 155, 50)
             _colorWipe(0, 0, 0, 50)
 
-        # STATE: OFF
+        # STATE: MeteorRain
+        # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
         elif ledmode == 4:
+            _meteorRain(141, 0, 155, 10, 64, True, 30)
+
+        # STATE: OFF
+        elif ledmode == 5:
             _setAll(0, 0, 0)
 
         time.sleep(0.01)
