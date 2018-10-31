@@ -17,12 +17,14 @@ import gc
 
 gc.collect()
 
+
 def memorySnapshot(location=None):
     if location:
         print("Location: {}".format(location))
 
-    print('Free memory: {}'.format(gc.mem_free()))
-    print('Allocated memory: {}'.format(gc.mem_alloc()))
+    print("Free memory: {}".format(gc.mem_free()))
+    print("Allocated memory: {}".format(gc.mem_alloc()))
+
 
 memorySnapshot()
 
@@ -55,7 +57,6 @@ leds = {
     #     "led_object": None,
     # },
     # "left_middle": {},
-
     # "right_rib": {},
     # "right_chest": {},
     # "right_abs": {},
@@ -81,7 +82,9 @@ def create_neopixel_objects(device=None):
         # Add neopixel object to dict
         leds[device]["led_object"] = _neopixel_obj
 
+
 # source: http://blender.stackexchange.com/questions/1879/is-it-possible-to-dump-an-objects-properties-and-methods
+
 
 def dump(obj):
     for attr in dir(obj):
@@ -99,6 +102,7 @@ def _delay(time_in_seconds):
     to_ms = float(time_in_seconds / 1000)
     time.sleep(to_ms)
 
+
 def _showStrip(device=None):
     """[Arduino version of showStrip, taken from tweaking4all]
 
@@ -108,6 +112,7 @@ def _showStrip(device=None):
     # Get device object (Usually of type NeoPixel)
     device = leds[device]["led_object"]
     device.show()
+
 
 def _setPixel(position, r, g, b, device=None):
     """[Arduino version of setPixel(), taken from tweaking4all]
@@ -130,12 +135,17 @@ def _setPixel(position, r, g, b, device=None):
     if type(g) == float:
         g = int(g)
 
-    _rgb = (r, g, b) if leds[device]["order"] == neopixel.RGB or leds[device]["order"] == neopixel.GRB else (
-        r, g, b, 0)
+    _rgb = (
+        (r, g, b)
+        if leds[device]["order"] == neopixel.RGB
+        or leds[device]["order"] == neopixel.GRB
+        else (r, g, b, 0)
+    )
 
     pixels = leds[device]["led_object"]
     pixels[position] = _rgb
     # time.sleep(0.1)
+
 
 def _setAll(r, g, b, device=None):
     """[Arduino version of setAll(), taken from tweaking4all]
@@ -152,6 +162,7 @@ def _setAll(r, g, b, device=None):
         _setPixel(i, r, g, b, device=device)
     _showStrip(device=device)
 
+
 def shortkeypress(color_palette):
     color_palette += 1
 
@@ -159,6 +170,7 @@ def shortkeypress(color_palette):
         color_palette = 1
 
     return color_palette
+
 
 def _RunningLights(red, green, blue, WaveDelay, device=None):
     """[summary]
@@ -194,15 +206,12 @@ def _RunningLights(red, green, blue, WaveDelay, device=None):
 
             if DEBUG_MODE:
                 print(
-                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
+                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(
+                        r, g, b
+                    )
+                )
 
-            _setPixel(
-                j,
-                r,
-                g,
-                b,
-                device=device,
-            )
+            _setPixel(j, r, g, b, device=device)
 
             j = j + 1
 
@@ -226,26 +235,30 @@ def _colorWipe(red, green, blue, WaveDelay, device=None):
                 )
             )
 
-        _setPixel(
-            k,
-            red,
-            green,
-            blue,
-            device=device,
-        )
+        _setPixel(k, red, green, blue, device=device)
 
         _showStrip(device=device)
         _delay(WaveDelay)
 
         k = k + 1
 
+
 # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
-def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDecay, speedDelay, device=None):
+def _meteorRain(
+    red,
+    green,
+    blue,
+    meteorSize,
+    meteorTrailDecay,
+    meteorRandomDecay,
+    speedDelay,
+    device=None,
+):
     num_pixels = leds[device]["num_pixels"]
 
     _setAll(0, 0, 0, device=device)
 
-    DOUBLE_NUM_LEDS = num_pixels+num_pixels
+    DOUBLE_NUM_LEDS = num_pixels + num_pixels
 
     i = 0
     while i < DOUBLE_NUM_LEDS:
@@ -260,13 +273,14 @@ def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDeca
         # draw meteor
         j = 0
         while j < meteorSize:
-            if (i-j < num_pixels) and (i-j >= 0):
-                _setPixel(i-j, red, green, blue, device=device)
+            if (i - j < num_pixels) and (i - j >= 0):
+                _setPixel(i - j, red, green, blue, device=device)
             j = j + 1
 
         _showStrip(device=device)
         _delay(speedDelay)
         i = i + 1
+
 
 def _fadeToBlack(ledNo, fadeValue, device=None):
     pixels = leds[device]["led_object"]
@@ -280,24 +294,21 @@ def _fadeToBlack(ledNo, fadeValue, device=None):
     b = float(oldColor[2])
 
     if DEBUG_MODE:
-        print(
-            "INSIDE: _fadeToBlack r,g,b as floats: r={}, g={}, b={}".format(r, g, b))
+        print("INSIDE: _fadeToBlack r,g,b as floats: r={}, g={}, b={}".format(r, g, b))
 
-    r = (r <= 10) and 0 or int(r-(r*fadeValue/256))
-    g = (g <= 10) and 0 or int(g-(g*fadeValue/256))
-    b = (b <= 10) and 0 or int(b-(b*fadeValue/256))
+    r = (r <= 10) and 0 or int(r - (r * fadeValue / 256))
+    g = (g <= 10) and 0 or int(g - (g * fadeValue / 256))
+    b = (b <= 10) and 0 or int(b - (b * fadeValue / 256))
 
     if DEBUG_MODE:
         print(
-            "INSIDE: _fadeToBlack r,g,b after conversion: r={}, g={}, b={}".format(r, g, b))
+            "INSIDE: _fadeToBlack r,g,b after conversion: r={}, g={}, b={}".format(
+                r, g, b
+            )
+        )
 
-    _setPixel(
-        ledNo,
-        r,
-        g,
-        b,
-        device=device,
-    )
+    _setPixel(ledNo, r, g, b, device=device)
+
 
 memorySnapshot()
 
