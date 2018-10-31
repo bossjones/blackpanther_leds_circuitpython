@@ -16,10 +16,16 @@ from digitalio import DigitalInOut, Direction, Pull
 
 leds = {
     "left_rib": {
+        # On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
+        # Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
         "data_pin": board.A7,
+        # number of pixels on device to use
         "num_pixels": 8,
+        # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
+        # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
         "order": neopixel.GRB,
         "brightness_lvl": 0.2,
+        # This is where the initialized neopixel object will go
         "led_object": None,
     },
     # "left_chest": {
@@ -44,39 +50,6 @@ leds = {
     # "right_middle": {},
 }
 
-
-
-
-DEBUG_MODE = False
-MAX_NUMBER_OF_ANIMATION_STATES = 5
-
-# On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
-# Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
-left_rib_data_pin = board.A7
-
-# The number of NeoPixels
-left_rib_num_pixels = 8
-
-# Disable this when not running on indiviual test strip
-num_pixels = left_rib_num_pixels
-
-# The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
-# For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
-ORDER = neopixel.GRB
-BRIGHTNESS_LVL = 0.2
-
-# Initialize NeoPixel object for left rib
-left_rib_pixel_strip = neopixel.NeoPixel(
-    left_rib_data_pin,
-    left_rib_num_pixels,
-    brightness=BRIGHTNESS_LVL,
-    auto_write=False,
-    pixel_order=ORDER,
-)
-
-# TESTING ONLY:
-pixels = left_rib_pixel_strip
-
 # source: http://blender.stackexchange.com/questions/1879/is-it-possible-to-dump-an-objects-properties-and-methods
 
 # NOTE: Use this guy to initialize neopixel objects and add them to our dictonary lookup
@@ -94,15 +67,8 @@ def create_neopixel_objects(device=None):
         # Add neopixel object to dict
         leds[device]["led_object"] = _neopixel_obj
 
-# TODO: Add the other devices
-# SETUP
-create_neopixel_objects(device="left_rib")
-
-# OLD VALUES
-# DEBUG_MODE = False
-# MAX_NUMBER_OF_ANIMATION_STATES = 5
 DEBUG_MODE = False
-MAX_NUMBER_OF_ANIMATION_STATES = len(leds)
+MAX_NUMBER_OF_ANIMATION_STATES = 5
 
 def dump(obj):
     for attr in dir(obj):
@@ -120,7 +86,6 @@ def _delay(time_in_seconds):
     to_ms = float(time_in_seconds / 1000)
     time.sleep(to_ms)
 
-# FIXME: add argument device=None
 def _showStrip(device=None):
     """[Arduino version of showStrip, taken from tweaking4all]
 
@@ -131,7 +96,6 @@ def _showStrip(device=None):
     device = leds[device]["led_object"]
     device.show()
 
-# FIXME: add argument device=None
 def _setPixel(position, r, g, b, device=None):
     """[Arduino version of setPixel(), taken from tweaking4all]
 
@@ -174,7 +138,6 @@ def _setAll(r, g, b, device=None):
     for i in range(num_pixels):
         _setPixel(i, r, g, b, device=device)
     _showStrip(device=device)
-
 
 def shortkeypress(color_palette):
     color_palette += 1
@@ -323,7 +286,6 @@ def _fadeToBlack(ledNo, fadeValue, device=None):
         device=device,
     )
 
-
 # BUTTON REGISTER
 button = DigitalInOut(board.BUTTON_A)
 button.direction = Direction.INPUT
@@ -332,12 +294,23 @@ button.pull = Pull.DOWN
 prevkeystate = False
 ledmode = 0  # button press counter, switch color palettes
 
-
 # dump(board)
 
 # dump(left_rib_data_pin)
 
 # dump(button)
+
+
+# TODO: Add the other devices
+# SETUP
+create_neopixel_objects(device="left_rib")
+# create_neopixel_objects(device="left_chest")
+# create_neopixel_objects(device="left_abs")
+# create_neopixel_objects(device="left_middle")
+# create_neopixel_objects(device="right_rib")
+# create_neopixel_objects(device="right_chest")
+# create_neopixel_objects(device="right_abs")
+# create_neopixel_objects(device="right_middle")
 
 # Mainloop
 try:
