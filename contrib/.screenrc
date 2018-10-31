@@ -38,6 +38,24 @@ defscrollback 50000
 # Allow mouse scrollback
 termcapinfo xterm* ti@:te@
 
+# terminfo and termcap for nice 256 color terminal
+# allow bold colors - necessary for some reason
+attrcolor b ".I"
+
+term xterm
+
+bind ( eval "writebuf" "exec sh -c 'pbcopy < /tmp/screen-exchange'"
+bind ")" eval "exec sh -c 'pbpaste > /tmp/screen-exchange'"
+
+#Use the alternate screen - helps with quiting vim and not messing up current window
+altscreen on
+
+# To make underlined text show in color add this to your ~/.screenrc file
+attrcolor u "-u R"
+
+# To stop the extraneous underlining, add this to your ~/.screenrc file:
+attrcolor d -d
+
 # screens
 screen -t 'bash'
 
