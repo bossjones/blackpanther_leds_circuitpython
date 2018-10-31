@@ -160,7 +160,6 @@ def _setPixel(position, r, g, b, device=None):
     pixels[position] = _rgb
     # time.sleep(0.1)
 
-# FIXME: add argument device=None
 def _setAll(r, g, b, device=None):
     """[Arduino version of setAll(), taken from tweaking4all]
 
@@ -185,8 +184,7 @@ def shortkeypress(color_palette):
 
     return color_palette
 
-# FIXME: add argument device=None
-def _RunningLights(red, green, blue, WaveDelay):
+def _RunningLights(red, green, blue, WaveDelay, device=None):
     """[summary]
 
     Arguments:
@@ -195,21 +193,18 @@ def _RunningLights(red, green, blue, WaveDelay):
         blue {int} -- [hex representation of color blue]
         WaveDelay {int} -- [time to delay animation, in seconds (will be converted to miliseconds)]
     """
+    num_pixels = leds[device]["num_pixels"]
 
     position = 0
 
     i = 0
-
-    # FIXME: replace num_pixels with leds[device]["num_pixels"]
     DOUBLE_NUM_PIXELS = num_pixels * 2
-
     while i < DOUBLE_NUM_PIXELS:
         if DEBUG_MODE:
             print("INSIDE: _RunningLights FIRST LOOP: i={}".format(i))
         position = position + 1  # = 0; #Position + Rate;
 
         j = 0
-        # FIXME: replace num_pixels with leds[device]["num_pixels"]
         while j < num_pixels:
             # NOTE: From orig
             # sine wave, 3 offset waves make a rainbow!
@@ -225,25 +220,26 @@ def _RunningLights(red, green, blue, WaveDelay):
                 print(
                     "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
 
-            # FIXME: add argument device=device
             _setPixel(
                 j,
                 r,
                 g,
                 b,
+                device=device,
             )
 
             j = j + 1
 
-        # FIXME: add argument device=device
-        _showStrip()
+        _showStrip(device=device)
         _delay(WaveDelay)
         i = i + 1
 
 
-def _colorWipe(red, green, blue, WaveDelay):
+def _colorWipe(red, green, blue, WaveDelay, device=None):
     """[ColorWipe animation from tweaking4all]
     """
+    num_pixels = leds[device]["num_pixels"]
+
     k = 0
     while k < num_pixels:
         if DEBUG_MODE:
@@ -254,25 +250,24 @@ def _colorWipe(red, green, blue, WaveDelay):
                 )
             )
 
-        # FIXME: add argument device=device
         _setPixel(
             k,
             red,
             green,
             blue,
+            device=device,
         )
 
-        # FIXME: add argument device=device
-        _showStrip()
+        _showStrip(device=device)
         _delay(WaveDelay)
 
         k = k + 1
 
 # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
+def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDecay, speedDelay, device=None):
+    num_pixels = leds[device]["num_pixels"]
 
-
-def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDecay, speedDelay):
-    _setAll(0, 0, 0)
+    _setAll(0, 0, 0, device=device)
 
     DOUBLE_NUM_LEDS = num_pixels+num_pixels
 
@@ -290,17 +285,14 @@ def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDeca
         j = 0
         while j < meteorSize:
             if (i-j < num_pixels) and (i-j >= 0):
-                # FIXME: add argument device=device
-                _setPixel(i-j, red, green, blue)
+                _setPixel(i-j, red, green, blue, device=device)
             j = j + 1
 
-        # FIXME: add argument device=device
-        _showStrip()
+        _showStrip(device=device)
         _delay(speedDelay)
         i = i + 1
 
-
-def _fadeToBlack(ledNo, fadeValue):
+def _fadeToBlack(ledNo, fadeValue, device=None):
     oldColor = pixels[ledNo]
 
     # What do 0LL or 0x0UL mean?
