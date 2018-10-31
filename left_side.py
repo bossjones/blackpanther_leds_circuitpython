@@ -1,15 +1,21 @@
+from digitalio import DigitalInOut, Direction, Pull  # pylint: disable=E0401
+import neopixel  # pylint: disable=E0401
+import micropython  # pylint: disable=E0401
+import board  # pylint: disable=E0401
+import time
+import sys
+import random
+import os
 import gc
 import math
-import os
-import random
-import sys
-import time
-
-import board  # pylint: disable=E0401
-import micropython  # pylint: disable=E0401
-import neopixel  # pylint: disable=E0401
-from digitalio import DigitalInOut, Direction, Pull  # pylint: disable=E0401
-
+gc.collect()
+gc.collect()
+gc.collect()
+gc.collect()
+gc.collect()
+gc.collect()
+gc.collect()
+gc.collect()
 gc.collect()
 
 DEBUG_MODE = False
