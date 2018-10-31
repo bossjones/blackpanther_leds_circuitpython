@@ -1,82 +1,45 @@
-from digitalio import DigitalInOut, Direction, Pull  # pylint: disable=E0401
-import neopixel  # pylint: disable=E0401
-import micropython  # pylint: disable=E0401
-import board  # pylint: disable=E0401
-import time
-import sys
-import random
-import os
 import gc
 import math
 gc.collect()
+import os
 gc.collect()
+import random
 gc.collect()
+import sys
 gc.collect()
+import time
 gc.collect()
+import board  # pylint: disable=E0401
 gc.collect()
+import micropython  # pylint: disable=E0401
 gc.collect()
+import neopixel  # pylint: disable=E0401
 gc.collect()
+from digitalio import DigitalInOut, Direction, Pull  # pylint: disable=E0401
 gc.collect()
-
-DEBUG_MODE = False
-MAX_NUMBER_OF_ANIMATION_STATES = 5
-
-leds = {
-    "left_rib": {
-        # On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
-        # Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
-        "data_pin": board.A7,
-        # number of pixels on device to use
-        "num_pixels": 8,
-        # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
-        # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
-        "order": neopixel.GRB,
-        "brightness_lvl": 0.2,
-        # This is where the initialized neopixel object will go
-        "led_object": None,
-    },
-    # "left_chest": {
-    #     "data_pin": board.NEOPIXEL,
-    #     "num_pixels": 10,
-    #     "order": neopixel.GRB,
-    #     "brightness_lvl": 0.2,
-    #     "led_object": None,
-    # },
-    # "left_abs": {
-    #     "data_pin": board.A2,
-    #     "num_pixels": 8,
-    #     "order": neopixel.GRB,
-    #     "brightness_lvl": 0.2,
-    #     "led_object": None,
-    # },
-    # "left_middle": {},
-    # "right_rib": {},
-    # "right_chest": {},
-    # "right_abs": {},
-    # "right_middle": {},
-}
-
 
 def memorySnapshot(location=None):
+    print("\n------memorySnapshot-----")
     if location:
-        print("Location: {}".format(location))
+        print("Location: {}\n".format(location))
 
     # pylint: disable=E1101
-    print("Free memory: {}".format(gc.mem_free())
+    print("Free memory: {} bytes".format(gc.mem_free())
           )  # pylint: disable=E1101
-    print("Allocated memory: {}".format(gc.mem_alloc())
+    print("Allocated memory: {} bytes".format(gc.mem_alloc())
           )  # pylint: disable=E1101
     print("Stack Use: {}".format(micropython.stack_use())
           )  # pylint: disable=E1101
-    print("Memory Info: {}".format(micropython.mem_info())
-          )  # pylint: disable=E1101
+    print("Memory Info:")  # pylint: disable=E1101
     print('-----------------------------')
-    micropython.mem_info(1)
+    micropython.mem_info()
+    print('-----------------------------')
+    print("\n")
 
 
 gc.collect()
 
-memorySnapshot()
+memorySnapshot(location="After func memorySnapshot defined")
 
 # SOURCE: http://deeplearning.net/software/theano/tutorial/python-memory-management.html
 
@@ -102,14 +65,14 @@ def create_neopixel_objects(device=None):
         _neopixel_obj = neopixel.NeoPixel(
             leds[device]["data_pin"],
             leds[device]["num_pixels"],
-            brightness=leds[device]["brightness_lvl"],
+            # NOTE: (Discord) tannewt: @beckskis22 @bossjones one thing to make sure of is that you aren't using neopixel brightness. it takes extra memory.
+            # brightness=leds[device]["brightness_lvl"],
             auto_write=False,
             pixel_order=leds[device]["order"],
         )
 
         # Add neopixel object to dict
         leds[device]["led_object"] = _neopixel_obj
-
 
 gc.collect()
 
@@ -130,7 +93,6 @@ def _delay(time_in_seconds):
 
     to_ms = float(time_in_seconds / 1000)
     time.sleep(to_ms)
-
 
 gc.collect()
 
@@ -262,33 +224,33 @@ gc.collect()
 #         _delay(WaveDelay)
 #         i = i + 1
 
-gc.collect()
+# gc.collect()
 
 
-def _colorWipe(red, green, blue, WaveDelay, device=None):
-    """[ColorWipe animation from tweaking4all]
-    """
-    num_pixels = leds[device]["num_pixels"]
+# def _colorWipe(red, green, blue, WaveDelay, device=None):
+#     """[ColorWipe animation from tweaking4all]
+#     """
+#     num_pixels = leds[device]["num_pixels"]
 
-    k = 0
-    while k < num_pixels:
-        if DEBUG_MODE:
-            print("BEFORE - INSIDE: _colorWipe FIRST LOOP: k={}".format(k))
-            print(
-                "BEFORE - INSIDE: _colorWipe FIRST LOOP: red={}, green={}, blue={}".format(
-                    red, green, blue
-                )
-            )
+#     k = 0
+#     while k < num_pixels:
+#         if DEBUG_MODE:
+#             print("BEFORE - INSIDE: _colorWipe FIRST LOOP: k={}".format(k))
+#             print(
+#                 "BEFORE - INSIDE: _colorWipe FIRST LOOP: red={}, green={}, blue={}".format(
+#                     red, green, blue
+#                 )
+#             )
 
-        _setPixel(k, red, green, blue, device=device)
+#         _setPixel(k, red, green, blue, device=device)
 
-        _showStrip(device=device)
-        _delay(WaveDelay)
+#         _showStrip(device=device)
+#         _delay(WaveDelay)
 
-        k = k + 1
+#         k = k + 1
 
 
-gc.collect()
+# gc.collect()
 
 # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
 
@@ -366,6 +328,44 @@ gc.collect()
 
 memorySnapshot()
 
+DEBUG_MODE = False
+MAX_NUMBER_OF_ANIMATION_STATES = 5
+
+leds = {
+    "left_rib": {
+        # On CircuitPlayground Express, and boards with built in status NeoPixel -> board.NEOPIXEL
+        # Otherwise choose an open pin connected to the Data In of the NeoPixel strip, i.e. board.D1
+        "data_pin": board.A7,
+        # number of pixels on device to use
+        "num_pixels": 8,
+        # The order of the pixel colors - RGB or GRB. Some NeoPixels have red and green reversed!
+        # For RGBW NeoPixels, simply change the ORDER to RGBW or GRBW.
+        "order": neopixel.GRB,
+        "brightness_lvl": 0.2,
+        # This is where the initialized neopixel object will go
+        "led_object": None,
+    },
+    # "left_chest": {
+    #     "data_pin": board.NEOPIXEL,
+    #     "num_pixels": 10,
+    #     "order": neopixel.GRB,
+    #     "brightness_lvl": 0.2,
+    #     "led_object": None,
+    # },
+    # "left_abs": {
+    #     "data_pin": board.A2,
+    #     "num_pixels": 8,
+    #     "order": neopixel.GRB,
+    #     "brightness_lvl": 0.2,
+    #     "led_object": None,
+    # },
+    # "left_middle": {},
+    # "right_rib": {},
+    # "right_chest": {},
+    # "right_abs": {},
+    # "right_middle": {},
+}
+
 # BUTTON REGISTER
 button = DigitalInOut(board.BUTTON_A)
 button.direction = Direction.INPUT
@@ -413,10 +413,10 @@ try:
         # elif ledmode == 2:
         #     _RunningLights(141, 0, 155, 50, device="left_rib")
 
-        # STATE: ColorWipe Purple
-        elif ledmode == 3:
-            _colorWipe(141, 0, 155, 50, device="left_rib")
-            _colorWipe(0, 0, 0, 50, device="left_rib")
+        # # STATE: ColorWipe Purple
+        # elif ledmode == 3:
+        #     _colorWipe(141, 0, 155, 50, device="left_rib")
+        #     _colorWipe(0, 0, 0, 50, device="left_rib")
 
         # STATE: MeteorRain
         # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay

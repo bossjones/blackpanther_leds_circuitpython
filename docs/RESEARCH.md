@@ -1,3 +1,22 @@
+# How to read symbols from micropython.mem_info(1)
+
+Symbol | Meaning
+--- | ---
+`.` | `free block`
+`h` | `head block`
+`=` | `tail block`
+`m` | `marked head block`
+`T` | `tuple`
+`L` | `list`
+`D` | `dict`
+`F` | `float`
+`B` | `byte code`
+`M` | `module`
+
+```
+Each letter represents a single block of memory, a block being 16 bytes. So each line of the heap dump represents 0x400 bytes or 1KiB of RAM.
+```
+
 # Neopixel troubleshooting
 
 ```
