@@ -279,3 +279,7 @@ SOURCE: https://github.com/micropython/micropython/issues/2057
 - [Understand How Much Memory Your Python Objects Use](https://code.tutsplus.com/tutorials/understand-how-much-memory-your-python-objects-use--cms-25609)
 - [Python Memory Management](http://deeplearning.net/software/theano_versions/0.8.X/tutorial/python-memory-management.html)
 - [Maximising MicroPython Speed](https://docs.micropython.org/en/latest/reference/speed_python.html)
+
+
+# Hardware/Circuits
+- [Avoiding NeoPixel glitches](https://ben.artins.org/electronics/glitchy-neopixels/)
