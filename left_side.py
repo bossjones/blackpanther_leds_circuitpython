@@ -5,10 +5,10 @@ import random
 import sys
 import time
 
-import board
-import micropython
-import neopixel
-from digitalio import DigitalInOut, Direction, Pull
+import board  # pylint: disable=E0401
+import micropython  # pylint: disable=E0401
+import neopixel  # pylint: disable=E0401
+from digitalio import DigitalInOut, Direction, Pull  # pylint: disable=E0401
 
 gc.collect()
 
@@ -50,20 +50,30 @@ leds = {
     # "right_middle": {},
 }
 
+
 def memorySnapshot(location=None):
     if location:
         print("Location: {}".format(location))
 
-    print("Free memory: {}".format(gc.mem_free()))  # pylint: disable=maybe-no-member
-    print("Allocated memory: {}".format(gc.mem_alloc()))  # pylint: disable=maybe-no-member
-    print("Stack Use: {}".format(micropython.stack_use()))  # pylint: disable=maybe-no-member
-    print("Memory Info: {}".format(micropython.mem_info()))  # pylint: disable=maybe-no-member
+    # pylint: disable=E1101
+    print("Free memory: {}".format(gc.mem_free())
+          )  # pylint: disable=E1101
+    print("Allocated memory: {}".format(gc.mem_alloc())
+          )  # pylint: disable=E1101
+    print("Stack Use: {}".format(micropython.stack_use())
+          )  # pylint: disable=E1101
+    print("Memory Info: {}".format(micropython.mem_info())
+          )  # pylint: disable=E1101
     print('-----------------------------')
     micropython.mem_info(1)
+
 
 gc.collect()
 
 memorySnapshot()
+
+# SOURCE: http://deeplearning.net/software/theano/tutorial/python-memory-management.html
+
 
 def show_sizeof(x, level=0):
 
@@ -78,6 +88,8 @@ def show_sizeof(x, level=0):
                 show_sizeof(xx, level + 1)
 
 # NOTE: Use this guy to initialize neopixel objects and add them to our dictonary lookup
+
+
 def create_neopixel_objects(device=None):
     # if device object exists
     if device in leds:
@@ -91,6 +103,7 @@ def create_neopixel_objects(device=None):
 
         # Add neopixel object to dict
         leds[device]["led_object"] = _neopixel_obj
+
 
 gc.collect()
 
@@ -112,7 +125,9 @@ def _delay(time_in_seconds):
     to_ms = float(time_in_seconds / 1000)
     time.sleep(to_ms)
 
+
 gc.collect()
+
 
 def _showStrip(device=None):
     """[Arduino version of showStrip, taken from tweaking4all]
@@ -124,7 +139,9 @@ def _showStrip(device=None):
     device = leds[device]["led_object"]
     device.show()
 
+
 gc.collect()
+
 
 def _setPixel(position, r, g, b, device=None):
     """[Arduino version of setPixel(), taken from tweaking4all]
@@ -158,7 +175,9 @@ def _setPixel(position, r, g, b, device=None):
     pixels[position] = _rgb
     # time.sleep(0.1)
 
+
 gc.collect()
+
 
 def _setAll(r, g, b, device=None):
     """[Arduino version of setAll(), taken from tweaking4all]
@@ -175,7 +194,9 @@ def _setAll(r, g, b, device=None):
         _setPixel(i, r, g, b, device=device)
     _showStrip(device=device)
 
+
 gc.collect()
+
 
 def shortkeypress(color_palette):
     color_palette += 1
@@ -184,6 +205,7 @@ def shortkeypress(color_palette):
         color_palette = 1
 
     return color_palette
+
 
 gc.collect()
 
@@ -236,6 +258,7 @@ gc.collect()
 
 gc.collect()
 
+
 def _colorWipe(red, green, blue, WaveDelay, device=None):
     """[ColorWipe animation from tweaking4all]
     """
@@ -258,9 +281,12 @@ def _colorWipe(red, green, blue, WaveDelay, device=None):
 
         k = k + 1
 
+
 gc.collect()
 
 # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
+
+
 def _meteorRain(
     red,
     green,
@@ -298,7 +324,9 @@ def _meteorRain(
         _delay(speedDelay)
         i = i + 1
 
+
 gc.collect()
+
 
 def _fadeToBlack(ledNo, fadeValue, device=None):
     pixels = leds[device]["led_object"]
@@ -326,6 +354,7 @@ def _fadeToBlack(ledNo, fadeValue, device=None):
         )
 
     _setPixel(ledNo, r, g, b, device=device)
+
 
 gc.collect()
 
