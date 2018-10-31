@@ -1,4 +1,4 @@
-
+# Note, this version ONLY works with the lift rib version
 import sys
 import os
 
