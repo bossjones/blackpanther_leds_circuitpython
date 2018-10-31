@@ -1,33 +1,19 @@
 import gc
-import micropython
-import sys
+import math
 import os
 import random
-import board
-import neopixel
+import sys
 import time
-import math
+
+import board
+import micropython
+import neopixel
 from digitalio import DigitalInOut, Direction, Pull
 
 gc.collect()
 
 DEBUG_MODE = False
 MAX_NUMBER_OF_ANIMATION_STATES = 5
-
-def memorySnapshot(location=None):
-    if location:
-        print("Location: {}".format(location))
-
-    print("Free memory: {}".format(gc.mem_free()))  # pylint: disable=maybe-no-member
-    print("Allocated memory: {}".format(gc.mem_alloc()))  # pylint: disable=maybe-no-member
-    print("Stack Use: {}".format(micropython.stack_use()))  # pylint: disable=maybe-no-member
-    print("Memory Info: {}".format(micropython.mem_info()))  # pylint: disable=maybe-no-member
-    print('-----------------------------')
-    micropython.mem_info(1)
-
-gc.collect()
-
-memorySnapshot()
 
 leds = {
     "left_rib": {
@@ -63,6 +49,33 @@ leds = {
     # "right_abs": {},
     # "right_middle": {},
 }
+
+def memorySnapshot(location=None):
+    if location:
+        print("Location: {}".format(location))
+
+    print("Free memory: {}".format(gc.mem_free()))  # pylint: disable=maybe-no-member
+    print("Allocated memory: {}".format(gc.mem_alloc()))  # pylint: disable=maybe-no-member
+    print("Stack Use: {}".format(micropython.stack_use()))  # pylint: disable=maybe-no-member
+    print("Memory Info: {}".format(micropython.mem_info()))  # pylint: disable=maybe-no-member
+    print('-----------------------------')
+    micropython.mem_info(1)
+
+gc.collect()
+
+memorySnapshot()
+
+def show_sizeof(x, level=0):
+
+    print("\t" * level, x.__class__, sys.getsizeof(x), x)
+
+    if hasattr(x, '__iter__'):
+        if hasattr(x, 'items'):
+            for xx in x.items():
+                show_sizeof(xx, level + 1)
+        else:
+            for xx in x:
+                show_sizeof(xx, level + 1)
 
 # NOTE: Use this guy to initialize neopixel objects and add them to our dictonary lookup
 def create_neopixel_objects(device=None):
@@ -271,7 +284,7 @@ def _meteorRain(
         j = 0
         while j < num_pixels:
             if (not meteorRandomDecay) or (random.randint(0, 10) > 5):
-                _fadeToBlack(j, meteorTrailDecay)
+                _fadeToBlack(j, meteorTrailDecay, device=device)
             j = j + 1
 
         # draw meteor
@@ -361,7 +374,7 @@ try:
         if ledmode == 1:
             _setAll(141, 0, 155, device="left_rib")
 
-        # # STATE: BP Running purple lights
+        # STATE: BP Running purple lights
         # elif ledmode == 2:
         #     _RunningLights(141, 0, 155, 50, device="left_rib")
 
