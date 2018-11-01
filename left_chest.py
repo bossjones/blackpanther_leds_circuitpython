@@ -22,7 +22,7 @@ BLACK = (0, 0, 0)
 ORANGE = (255, 40, 0)
 OFF = BLACK
 
-COLORS = [RED, YELLOW, GREEN, AQUA, BLUE, PURPLE, BLACK]
+# COLORS = [RED, YELLOW, GREEN, AQUA, BLUE, PURPLE, BLACK]
 
 class LeftUnit(nonblocking_timer):
     def __init__(self):
@@ -100,31 +100,31 @@ class PixelAnimatorNG(nonblocking_timer):
     self._color = color
     self.pixels.fill(color)
 
-  def _setPixel(self, position, r, g, b):
-    """[Arduino version of setPixel(), taken from tweaking4all]
+#   def _setPixel(self, position, r, g, b):
+#     """[Arduino version of setPixel(), taken from tweaking4all]
 
-    Arguments:
-        position {int} -- [description]
-        r {int} -- [description]
-        g {int} -- [description]
-        b {int} -- [description]
-    """
-    self.pixels[position] = tuple(
-        map(lambda x: int(x) if isinstance(x, float) else x, [r, g, b]))
+#     Arguments:
+#         position {int} -- [description]
+#         r {int} -- [description]
+#         g {int} -- [description]
+#         b {int} -- [description]
+#     """
+#     self.pixels[position] = tuple(
+#         map(lambda x: int(x) if isinstance(x, float) else x, [r, g, b]))
 
 
-  def _setAll(self, r, g, b):
-    """[Arduino version of setAll(), taken from tweaking4all]
+#   def _setAll(self, r, g, b):
+#     """[Arduino version of setAll(), taken from tweaking4all]
 
-    Arguments:
-        r {[type]} -- [description]
-        g {[type]} -- [description]
-        b {[type]} -- [description]
-    """
+#     Arguments:
+#         r {[type]} -- [description]
+#         g {[type]} -- [description]
+#         b {[type]} -- [description]
+#     """
 
-    for i in range(len(self.pixels)):
-        self._setPixel(i, r, g, b)
-    self.pixels.show()
+#     for i in range(len(self.pixels)):
+#         self._setPixel(i, r, g, b)
+#     self.pixels.show()
 
   def _getAnimator(self, animation_type):
     if animation_type == PixelAnimatorNG.LINEAR:
@@ -160,11 +160,11 @@ class _RunningLightsAnimator(nonblocking_timer):
         self._position = 0 # think position
         self._double_num_pixels = len(self._pixels) * 2
 
-        self._steps = len(self._pixels)
-        self._color = OFF
-        self._increasing = True
-        self._currentColor = OFF
-        self._currentStep = 0  # same as position
+        # self._steps = len(self._pixels)
+        # self._color = OFF
+        # self._increasing = True
+        # self._currentColor = OFF
+        # self._currentStep = 0  # same as position
         # self._deltaColor = tuple(map(lambda x: x / float(steps), ORANGE))
 
     def performSinMath(self, color_tuple):
@@ -174,35 +174,54 @@ class _RunningLightsAnimator(nonblocking_timer):
         g = ((math.sin(self._current_pixel + self._position) * 127 + 128) / 255) * green
         b = ((math.sin(self._current_pixel + self._position) * 127 + 128) / 255) * blue
 
+        print("Class = '{}' func = 'performSinMath' r = '{}' g = '{}' b = '{}'\n".format(
+            self.__qualname__, r,g, b))
+
         # basically the same as this _setPixel(j, r, g, b, device=device)
         return tuple(map(lambda x: int(x) if isinstance(x, float) else x, [r, g, b]))
 
     def next(self):
         print("Class = '{}' func = 'next' self._position_state = '{}' self._position = '{}' self._current_pixel = '{}'\n".format(
             self.__qualname__, self._position_state, self._position, self._current_pixel))
-        print('-------------------------')
-        debugger.dump(self)
-        print('-------------------------')
+        # print('-------------------------')
+        # debugger.dump(self)
+        # print('-------------------------')
 
         # step1: check if we move to position++ or do we stay where we are at
         if self._position_state == _RunningLightsAnimator.STAY_AT_POSITION:
+            print("step1: check if we move to position++ or do we stay where we are at")
 
             # step2: Check if position value (self._position < self._double_num_pixels) or (0 < DOUBLE_NUM_PIXELS)
             if self._position < self._double_num_pixels:
+                print("step2: Check if position value (self._position < self._double_num_pixels) or (0 < DOUBLE_NUM_PIXELS)")
 
                 # step3: check if (_current_pixel < num_pixels) AKA (j < num_pixels)
                 if self._current_pixel < len(self._pixels):
-                    self._pixels[self._position] = self.performSinMath(PURPLE)
+                    print(
+                        "step3: check if (_current_pixel < num_pixels) AKA (j < num_pixels)")
+                    self._pixels[self._current_pixel] = self.performSinMath(
+                        PURPLE)
+
+                    print("Class = '{}' func = 'next' self._current_pixel = '{}' self._pixels[self._current_pixel] = '{}'\n".format(
+                        self.__qualname__, self._current_pixel, self._pixels[self._current_pixel]))
+
+                    print('-------------------------')
+                    debugger.dump(self)
+                    print('-------------------------')
                     # print("color: %s step: %s", self._color, self._currentStep)
                     # j = j + 1
                     self._current_pixel = self._current_pixel + 1
                 else:
+                    print(
+                        "step4: since we've hit 'len(self._pixels)' RUN: self._position = self._position + 1")
                     self._position_state = _RunningLightsAnimator.INCREMENT_POSITION
                     self._position = self._position + 1
                     self._position_state = _RunningLightsAnimator.STAY_AT_POSITION
 
             # If we've done more than double the number of pixels worth of animation, reset back to 0
             else:
+                print(
+                    "If we've done more than double the number of pixels worth of animation, reset back to 0")
                 self._position_state = _RunningLightsAnimator.RESET_POSITION
                 self._position = 0
                 self._position_state = _RunningLightsAnimator.STAY_AT_POSITION
@@ -231,10 +250,13 @@ class _RunningLightsAnimator(nonblocking_timer):
 
 # NOTE: SMOKE-TESTS IN REPL
 # import left_chest
+# import debugger
+# debugger.memorySnapshot()
 # currentDemo = left_chest.LeftUnit()
-# currentDemo
+# debugger.memorySnapshot()
 # currentDemo.start()
-# # currentDemo.next()
+# debugger.memorySnapshot()
+# currentDemo.next()
 # >> > debugger.dump(currentDemo)
 # obj.next = <bound_method >
 # obj.__qualname__ = LeftUnit
