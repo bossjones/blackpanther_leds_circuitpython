@@ -21,7 +21,10 @@ class PixelAnimator(nonblocking_timer):
         super(PixelAnimator, self).__init__()
         self.pixels = pixels
         self.animator = self._getAnimator(PixelAnimator.LINEAR)
-        print("PixelAnimator Demo: pixel count = %s" % len(self.pixels))
+
+        # print("PixelAnimator Demo: pixel count = %s" % len(self.pixels))
+        print("Class = '{}' func = '__init__' len(self.pixels) = '{}'\n".format(
+            self.__qualname__, len(self.pixels)))
 
     def next(self):
         self.animator.next()

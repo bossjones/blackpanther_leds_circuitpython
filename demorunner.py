@@ -15,11 +15,14 @@ import exceptions
 
 index = 0
 demos = [
+    # left_chest.FlashDemo(),
+
     nightlight.NightLight(),
+
+
     # blinkdemo.FlashDemo(),
     # rainbowdemo.RainbowDemo(),
     # rainbowdemo.RainbowCycleDemo(),
-    # left_chest.FlashDemo(),
     # blinkdemo.BlinkDemo(),
     # demos.TouchDemo(),
 ]
