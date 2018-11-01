@@ -13,6 +13,7 @@ from digitalio import DigitalInOut, Direction
 
 class NightLight(nonblocking_timer):
     def __init__(self):
+        # FIXME: 10/31/2018 I added this interval value 0.01
         super(NightLight, self).__init__()
         pixels = neopixel.NeoPixel(board.NEOPIXEL, 10, auto_write=1, brightness=1.0)
         pixels.fill((0, 0, 0))

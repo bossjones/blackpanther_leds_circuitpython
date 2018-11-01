@@ -70,8 +70,12 @@ class nonblocking_timer(object):
     _RUNNING = "RUNNING"
 
     def __init__(self, interval=-1):
-        """Create a new timer with optional interval. Initial state is _STOPPED.
-       Call start() to set status to _RUNNING. """
+        """
+        Create a new timer with optional interval.
+        Initial state is _STOPPED.
+        Call start() to set status to _RUNNING.
+        """
+        print("Class = '{}' __init__.interval = '{}'".format(self.__qualname__, interval))
         self._interval = interval
         self._status = nonblocking_timer._STOPPED
         self._start_time = 0

@@ -17,6 +17,7 @@ class PixelAnimator(nonblocking_timer):
     LINEAR = 0
 
     def __init__(self, pixels):
+        # FIXME: 10/31/2018 I added this interval value 0.01
         super(PixelAnimator, self).__init__()
         self.pixels = pixels
         self.animator = self._getAnimator(PixelAnimator.LINEAR)
@@ -38,6 +39,7 @@ class PixelAnimator(nonblocking_timer):
 class _LinearAnimator(nonblocking_timer):
     def __init__(self, pixels, interval=0, steps=0):
         super(_LinearAnimator, self).__init__(interval / float(steps))
+        print("DEBUG: _LinearAnimator.interval = {}".format(interval))
         if interval <= 0:
             print("yeah it failed here: _LinearAnimator")
             raise Exception("Interval must be > 0")
