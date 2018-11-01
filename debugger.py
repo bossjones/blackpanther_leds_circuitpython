@@ -1,6 +1,6 @@
 import gc
 import micropython  # pylint: disable=E0401
-
+gc.collect()
 
 def memorySnapshot(location=None):
     print("\n------memorySnapshot-----")
@@ -17,8 +17,7 @@ def memorySnapshot(location=None):
     print("-----------------------------")
     print("\n")
 
-
 def dump(obj):
     for attr in dir(obj):
         if hasattr(obj, attr):
-            print("obj.%s = %s" % (attr, getattr(obj, attr)))
+            print("obj.{} = {}".format(attr, getattr(obj, attr)))

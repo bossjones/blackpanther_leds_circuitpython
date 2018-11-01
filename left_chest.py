@@ -1,24 +1,51 @@
 import gc
-import board
-import digitalio
-from nonblocking_timer import nonblocking_timer
-import neopixel
-import math
-import debugger
-
+import micropython  # pylint: disable=E0401
 gc.collect()
+import board
+gc.collect()
+from nonblocking_timer import nonblocking_timer
+gc.collect()
+import neopixel
+gc.collect()
+import math
+gc.collect()
+# import debugger
+# gc.collect()
 
-RED = 0x100000  # (0x10, 0, 0) also works
-YELLOW = (0x10, 0x10, 0)
-GREEN = (0, 0x10, 0)
-AQUA = (0, 0x10, 0x10)
-BLUE = (0, 0, 0x10)
+# RED = 0x100000  # (0x10, 0, 0) also works
+# YELLOW = (0x10, 0x10, 0)
+# GREEN = (0, 0x10, 0)
+# AQUA = (0, 0x10, 0x10)
+# BLUE = (0, 0, 0x10)
 PURPLE = (0x10, 0, 0x10)
 BLACK = (0, 0, 0)
-ORANGE = (255, 40, 0)
+# ORANGE = (255, 40, 0)
 OFF = BLACK
 
 # COLORS = [RED, YELLOW, GREEN, AQUA, BLUE, PURPLE, BLACK]
+
+def memorySnapshot(location=None):
+    print("\n------memorySnapshot-----")
+    if location:
+        print("Location: {}\n".format(location))
+
+    # pylint: disable=E1101
+    print("Free memory: {} bytes".format(
+        gc.mem_free()))  # pylint: disable=E1101
+    print("Allocated memory: {} bytes".format(
+        gc.mem_alloc()))  # pylint: disable=E1101
+    print("Stack Use: {}".format(micropython.stack_use()))  # pylint: disable=E1101
+    print("Memory Info:")  # pylint: disable=E1101
+    print("-----------------------------")
+    micropython.mem_info(1)
+    print("-----------------------------")
+    print("\n")
+
+
+def dump(obj):
+    for attr in dir(obj):
+        if hasattr(obj, attr):
+            print("obj.{} = {}".format(attr, getattr(obj, attr)))
 
 
 class LeftUnit(nonblocking_timer):
@@ -192,19 +219,19 @@ class _RunningLightsAnimator(nonblocking_timer):
 
         # step1: check if we move to position++ or do we stay where we are at
         if self._position_state == _RunningLightsAnimator.STAY_AT_POSITION:
-            print("step1: check if we move to position++ or do we stay where we are at")
+            # print("step1: check if we move to position++ or do we stay where we are at")
 
             # step2: Check if position value (self._position < self._double_num_pixels) or (0 < DOUBLE_NUM_PIXELS)
             if self._position < self._double_num_pixels:
-                print(
-                    "step2: Check if position value (self._position < self._double_num_pixels) or (0 < DOUBLE_NUM_PIXELS)"
-                )
+                # print(
+                #     "step2: Check if position value (self._position < self._double_num_pixels) or (0 < DOUBLE_NUM_PIXELS)"
+                # )
 
                 # step3: check if (_current_pixel < num_pixels) AKA (j < num_pixels)
                 if self._current_pixel < len(self._pixels):
-                    print(
-                        "step3: check if (_current_pixel < num_pixels) AKA (j < num_pixels)"
-                    )
+                    # print(
+                    #     "step3: check if (_current_pixel < num_pixels) AKA (j < num_pixels)"
+                    # )
 
                     self._pixels[self._current_pixel] = self.performSinMath(PURPLE)
 
@@ -218,25 +245,26 @@ class _RunningLightsAnimator(nonblocking_timer):
                         )
                     )
 
-                    print("-------------------------")
-                    debugger.dump(self)
-                    print("-------------------------")
+                    # print("-------------------------")
+                    # dump(self)
+                    # print("-------------------------")
+
                     # print("color: %s step: %s", self._color, self._currentStep)
                     # j = j + 1
                     self._current_pixel = self._current_pixel + 1
                 else:
-                    print(
-                        "step4: since we've hit 'len(self._pixels)' RUN: self._position = self._position + 1"
-                    )
+                    # print(
+                    #     "step4: since we've hit 'len(self._pixels)' RUN: self._position = self._position + 1"
+                    # )
                     self._position_state = _RunningLightsAnimator.INCREMENT_POSITION
                     self._position = self._position + 1
                     self._position_state = _RunningLightsAnimator.STAY_AT_POSITION
 
             # If we've done more than double the number of pixels worth of animation, reset back to 0
             else:
-                print(
-                    "If we've done more than double the number of pixels worth of animation, reset back to 0"
-                )
+                # print(
+                #     "If we've done more than double the number of pixels worth of animation, reset back to 0"
+                # )
                 self._position_state = _RunningLightsAnimator.RESET_POSITION
                 self._position = 0
                 self._position_state = _RunningLightsAnimator.STAY_AT_POSITION

@@ -1,6 +1,7 @@
 import gc
+
+import time
 # gc.collect()
-# import time
 import board
 gc.collect()
 import sys
@@ -13,6 +14,7 @@ gc.collect()
 
 import left_chest
 gc.collect()
+
 # import debugger
 # debugger.memorySnapshot()
 # currentDemo = left_chest.LeftUnit()
