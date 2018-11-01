@@ -1,5 +1,3 @@
-# TODO: Try making things into classes
-
 https://github.com/mikepschneider/circuitpy_ms/blob/1242a96171f5b436f53807b7a6893315022f292b/CIRCUITPY/demorunner.py
 
 # How to read symbols from micropython.mem_info(1)
@@ -20,6 +18,18 @@ Symbol | Meaning
 ```
 Each letter represents a single block of memory, a block being 16 bytes. So each line of the heap dump represents 0x400 bytes or 1KiB of RAM.
 ```
+
+# Performance Tips
+- [PythonSpeed - PerformanceTips](https://wiki.python.org/moin/PythonSpeed/PerformanceTips)
+- [Variables and scope](https://python-textbok.readthedocs.io/en/1.0/Variables_and_Scope.html)
+- [Understand How Much Memory Your Python Objects Use](https://code.tutsplus.com/tutorials/understand-how-much-memory-your-python-objects-use--cms-25609)
+- [Python Memory Management](http://deeplearning.net/software/theano_versions/0.8.X/tutorial/python-memory-management.html)
+- [Maximising MicroPython Speed](https://docs.micropython.org/en/latest/reference/speed_python.html)
+
+
+# Hardware/Circuits
+- [Avoiding NeoPixel glitches](https://ben.artins.org/electronics/glitchy-neopixels/)
+
 
 # Neopixel troubleshooting
 
@@ -273,18 +283,6 @@ http://www.davehylands.com
 SOURCE: https://github.com/micropython/micropython/issues/2057
 
 
-# Performance Tips
-- [PythonSpeed - PerformanceTips](https://wiki.python.org/moin/PythonSpeed/PerformanceTips)
-- [Variables and scope](https://python-textbok.readthedocs.io/en/1.0/Variables_and_Scope.html)
-- [Understand How Much Memory Your Python Objects Use](https://code.tutsplus.com/tutorials/understand-how-much-memory-your-python-objects-use--cms-25609)
-- [Python Memory Management](http://deeplearning.net/software/theano_versions/0.8.X/tutorial/python-memory-management.html)
-- [Maximising MicroPython Speed](https://docs.micropython.org/en/latest/reference/speed_python.html)
-
-
-# Hardware/Circuits
-- [Avoiding NeoPixel glitches](https://ben.artins.org/electronics/glitchy-neopixels/)
-
-
 # PYTHON EXCEPTION CHAINS (OR TREES) (PYTHON RECIPE)
 
 ```
@@ -404,4 +402,46 @@ if __name__ == '__main__':
         e.write(indentation='||  ')
     print >>sys.stderr, "NOW THE DEFAULT HANDLER"
     application()
+```
+
+
+# Testing memory using the python REPL
+
+```
+>> import left_chest
+>> import debugger
+>> debugger.memorySnapshot()
+>> currentDemo = left_chest.LeftUnit()
+>> debugger.memorySnapshot()
+>> currentDemo.start()
+>> debugger.memorySnapshot()
+
+# Keep calling this to see the animation go through
+>> currentDemo.next()
+```
+
+# Example dump(LeftUnit)
+
+```
+>> > debugger.dump(currentDemo)
+obj.next = <bound_method >
+obj.__qualname__ = LeftUnit
+obj.stop = <bound_method >
+obj.__module__ = left_chest
+obj.__init__ = <bound_method >
+obj._status = RUNNING
+obj._interval = 0.25
+obj._left_rib_index = 0
+obj._left_chest_pixels = [(0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0),
+                          (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)]
+obj._start_time = 76573.0
+obj._left_abs_animator = <PixelAnimatorNG object at 20001b40 >
+obj._left_chest_index = 0
+obj._left_rib_pixels = [(0, 0, 0), (0, 0, 0), (0, 0, 0),
+                        (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)]
+obj._left_chest_animator = <PixelAnimatorNG object at 200018c0 >
+obj._left_abs_pixels_index = 0
+obj._left_abs_pixels = [(0, 0, 0), (0, 0, 0), (0, 0, 0),
+                        (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)]
+obj._left_rib_animator = <PixelAnimatorNG object at 20002a10 >
 ```

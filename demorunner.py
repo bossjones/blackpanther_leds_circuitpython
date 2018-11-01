@@ -15,22 +15,9 @@ gc.collect()
 import left_chest
 gc.collect()
 
-# import debugger
-# debugger.memorySnapshot()
-# currentDemo = left_chest.LeftUnit()
-# debugger.memorySnapshot()
-# currentDemo.start()
-# debugger.memorySnapshot()
-# currentDemo.next()
-
 # import blinkdemo
 from buttonwatcher import ButtonWatcher
 gc.collect()
-
-# FIXME: This import is causing 'MemoryError: memory allocation failed, allocating %u bytes'
-# import left_chest
-import exceptions
-
 
 index = 0
 demos = [
@@ -70,11 +57,11 @@ try:
         time.sleep(0.001)
 except MemoryError as error:
     # Output unexpected MemoryErrors.
-    sys.print_exception(error)
+    sys.print_exception(error)  # pylint: disable=E1101
     raise
 except RuntimeError as error:
     # Output unexpected RuntimeError.
-    sys.print_exception(error)
+    sys.print_exception(error)  # pylint: disable=E1101
     raise
 except KeyboardInterrupt as exception:
     pass

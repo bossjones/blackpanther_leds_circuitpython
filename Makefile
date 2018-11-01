@@ -26,7 +26,6 @@ cp-to-device:
 	rsync --verbose --update debugger.py /Volumes/CIRCUITPY/
 	rsync --verbose --update nightlight.py /Volumes/CIRCUITPY/
 	rsync --verbose --update pixelanimator.py /Volumes/CIRCUITPY/
-	rsync --verbose --update exceptions.py /Volumes/CIRCUITPY/
 	rsync --verbose --update rainbowdemo.py /Volumes/CIRCUITPY/
 	rsync --verbose --update blinkdemo.py /Volumes/CIRCUITPY/
 	rsync --verbose --update code.py /Volumes/CIRCUITPY/
@@ -41,7 +40,6 @@ rm-device:
 	rm -fv /Volumes/CIRCUITPY/debugger.py
 	rm -fv /Volumes/CIRCUITPY/nightlight.py
 	rm -fv /Volumes/CIRCUITPY/pixelanimator.py
-	rm -fv /Volumes/CIRCUITPY/exceptions.py
 	rm -fv /Volumes/CIRCUITPY/rainbowdemo.py
 	rm -fv /Volumes/CIRCUITPY/blinkdemo.py
 
