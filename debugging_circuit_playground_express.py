@@ -95,8 +95,7 @@ def _setPixel(position, r, g, b):
     if type(g) == float:
         g = int(g)
 
-    _rgb = (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (
-        r, g, b, 0)
+    _rgb = (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
     pixels[position] = _rgb
     # time.sleep(0.1)
 
@@ -158,14 +157,12 @@ def _RunningLights(red, green, blue, WaveDelay):
 
             if DEBUG_MODE:
                 print(
-                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
+                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(
+                        r, g, b
+                    )
+                )
 
-            _setPixel(
-                j,
-                r,
-                g,
-                b,
-            )
+            _setPixel(j, r, g, b)
 
             j = j + 1
 
@@ -187,25 +184,23 @@ def _colorWipe(red, green, blue, WaveDelay):
                 )
             )
 
-        _setPixel(
-            k,
-            red,
-            green,
-            blue,
-        )
+        _setPixel(k, red, green, blue)
 
         _showStrip()
         _delay(WaveDelay)
 
         k = k + 1
 
+
 # meteorRain - Color (red, green, blue), meteor size, trail decay, random trail decay (true/false), speed delay
 
 
-def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDecay, speedDelay):
+def _meteorRain(
+    red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDecay, speedDelay
+):
     _setAll(0, 0, 0)
 
-    DOUBLE_NUM_LEDS = num_pixels+num_pixels
+    DOUBLE_NUM_LEDS = num_pixels + num_pixels
 
     i = 0
     while i < DOUBLE_NUM_LEDS:
@@ -220,8 +215,8 @@ def _meteorRain(red, green, blue, meteorSize, meteorTrailDecay, meteorRandomDeca
         # draw meteor
         j = 0
         while j < meteorSize:
-            if (i-j < num_pixels) and (i-j >= 0):
-                _setPixel(i-j, red, green, blue)
+            if (i - j < num_pixels) and (i - j >= 0):
+                _setPixel(i - j, red, green, blue)
             j = j + 1
 
         _showStrip()
@@ -239,23 +234,20 @@ def _fadeToBlack(ledNo, fadeValue):
     b = float(oldColor[2])
 
     if DEBUG_MODE:
-        print(
-            "INSIDE: _fadeToBlack r,g,b as floats: r={}, g={}, b={}".format(r, g, b))
+        print("INSIDE: _fadeToBlack r,g,b as floats: r={}, g={}, b={}".format(r, g, b))
 
-    r = (r <= 10) and 0 or int(r-(r*fadeValue/256))
-    g = (g <= 10) and 0 or int(g-(g*fadeValue/256))
-    b = (b <= 10) and 0 or int(b-(b*fadeValue/256))
+    r = (r <= 10) and 0 or int(r - (r * fadeValue / 256))
+    g = (g <= 10) and 0 or int(g - (g * fadeValue / 256))
+    b = (b <= 10) and 0 or int(b - (b * fadeValue / 256))
 
     if DEBUG_MODE:
         print(
-            "INSIDE: _fadeToBlack r,g,b after conversion: r={}, g={}, b={}".format(r, g, b))
+            "INSIDE: _fadeToBlack r,g,b after conversion: r={}, g={}, b={}".format(
+                r, g, b
+            )
+        )
 
-    _setPixel(
-        ledNo,
-        r,
-        g,
-        b,
-    )
+    _setPixel(ledNo, r, g, b)
 
 
 # BUTTON REGISTER

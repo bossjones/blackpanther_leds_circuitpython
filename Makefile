@@ -16,3 +16,31 @@ debug:
 
 cp-screenrc:
 	cp ./contrib/.screenrc ~/.screenrc
+
+cp-to-device:
+	rsync --verbose --update nonblocking_timer.py /Volumes/CIRCUITPY/
+	rsync --verbose --update left_chest.py /Volumes/CIRCUITPY/
+	rsync --verbose --update buttonwatcher.py /Volumes/CIRCUITPY/
+	rsync --verbose --update demorunner.py /Volumes/CIRCUITPY/
+	rsync --verbose --update helloworld.py /Volumes/CIRCUITPY/
+	rsync --verbose --update debugger.py /Volumes/CIRCUITPY/
+	rsync --verbose --update nightlight.py /Volumes/CIRCUITPY/
+	rsync --verbose --update pixelanimator.py /Volumes/CIRCUITPY/
+	rsync --verbose --update rainbowdemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update blinkdemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update code.py /Volumes/CIRCUITPY/
+	@df -H /Volumes/CIRCUITPY/
+
+rm-device:
+	rm -fv /Volumes/CIRCUITPY/nonblocking_timer.py
+	rm -fv /Volumes/CIRCUITPY/left_chest.py
+	rm -fv /Volumes/CIRCUITPY/buttonwatcher.py
+	rm -fv /Volumes/CIRCUITPY/demorunner.py
+	rm -fv /Volumes/CIRCUITPY/helloworld.py
+	rm -fv /Volumes/CIRCUITPY/debugger.py
+	rm -fv /Volumes/CIRCUITPY/nightlight.py
+	rm -fv /Volumes/CIRCUITPY/pixelanimator.py
+	rm -fv /Volumes/CIRCUITPY/rainbowdemo.py
+	rm -fv /Volumes/CIRCUITPY/blinkdemo.py
+
+clean: rm-device

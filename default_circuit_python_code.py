@@ -21,6 +21,8 @@ MAX_ANALOG_VALUE = 65536
 def get_voltage(pin):
     """ Get value from analog sensor and convert it to a 0-3.3V voltage reading """
     return (pin.value * 3.3) / MAX_ANALOG_VALUE
+
+
 # ------- analog info ---- [end]
 
 
@@ -29,9 +31,7 @@ def get_voltage(pin):
 # # NOTE: A DigitalInOut is used to digitally control I/O pins.
 # Create a new DigitalInOut object associated with the pin.
 # Defaults to input with no pull. Use switch_to_input() and switch_to_output() to change the direction.
-led = DigitalInOut(
-    board.D13
-)
+led = DigitalInOut(board.D13)
 
 led.direction = Direction.OUTPUT
 
@@ -243,8 +243,7 @@ def _setPixel(position, r, g, b):
     if type(g) == float:
         g = int(g)
 
-    _rgb = (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (
-        r, g, b, 0)
+    _rgb = (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
     pixels[position] = _rgb
     # time.sleep(0.1)
 
@@ -380,14 +379,12 @@ def _RunningLights(red, green, blue, WaveDelay):
 
             if DEBUG_MODE:
                 print(
-                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
+                    "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(
+                        r, g, b
+                    )
+                )
 
-            _setPixel(
-                j,
-                r,
-                g,
-                b,
-            )
+            _setPixel(j, r, g, b)
 
             j = j + 1
 

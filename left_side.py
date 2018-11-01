@@ -1,22 +1,32 @@
 import gc
 import math
+
 gc.collect()
 import os
+
 gc.collect()
 import random
+
 gc.collect()
 import sys
+
 gc.collect()
 import time
+
 gc.collect()
 import board  # pylint: disable=E0401
+
 gc.collect()
 import micropython  # pylint: disable=E0401
+
 gc.collect()
 import neopixel  # pylint: disable=E0401
+
 gc.collect()
 from digitalio import DigitalInOut, Direction, Pull  # pylint: disable=E0401
+
 gc.collect()
+
 
 def memorySnapshot(location=None):
     print("\n------memorySnapshot-----")
@@ -24,16 +34,13 @@ def memorySnapshot(location=None):
         print("Location: {}\n".format(location))
 
     # pylint: disable=E1101
-    print("Free memory: {} bytes".format(gc.mem_free())
-          )  # pylint: disable=E1101
-    print("Allocated memory: {} bytes".format(gc.mem_alloc())
-          )  # pylint: disable=E1101
-    print("Stack Use: {}".format(micropython.stack_use())
-          )  # pylint: disable=E1101
+    print("Free memory: {} bytes".format(gc.mem_free()))  # pylint: disable=E1101
+    print("Allocated memory: {} bytes".format(gc.mem_alloc()))  # pylint: disable=E1101
+    print("Stack Use: {}".format(micropython.stack_use()))  # pylint: disable=E1101
     print("Memory Info:")  # pylint: disable=E1101
-    print('-----------------------------')
+    print("-----------------------------")
     micropython.mem_info(1)
-    print('-----------------------------')
+    print("-----------------------------")
     print("\n")
 
 
@@ -74,6 +81,7 @@ def create_neopixel_objects(device=None):
         # Add neopixel object to dict
         leds[device]["led_object"] = _neopixel_obj
 
+
 gc.collect()
 
 memorySnapshot(location="After func create_neopixel_objects defined")
@@ -86,6 +94,7 @@ memorySnapshot(location="After func create_neopixel_objects defined")
 #         if hasattr(obj, attr):
 #             print("obj.%s = %s" % (attr, getattr(obj, attr)))
 
+
 def _delay(time_in_seconds):
     """[Perform a time sleep in miliseconds.]
 
@@ -95,6 +104,7 @@ def _delay(time_in_seconds):
 
     to_ms = float(time_in_seconds / 1000)
     time.sleep(to_ms)
+
 
 gc.collect()
 
