@@ -99,7 +99,11 @@ class nonblocking_timer(object):
             raise RuntimeError("Interval must be > 0")
 
         if self._status != nonblocking_timer._RUNNING:
-            raise RuntimeError("Timer must be in state _RUNNING before calling next()")
+            # print("Class = '{}' func = 'next' self._status = '{}' nonblocking_timer._RUNNING = '{}' message = 'Timer must be in state _RUNNING before calling next()'\n".format(
+            #     self.__qualname__, self._status, nonblocking_timer._RUNNING))
+            # raise RuntimeError("Timer must be in state _RUNNING before calling next()")
+            raise RuntimeError("Class = '{}' func = 'next' self._status = '{}' nonblocking_timer._RUNNING = '{}' message = 'Timer must be in state _RUNNING before calling next()'\n".format(
+                self.__qualname__, self._status, nonblocking_timer._RUNNING))
 
         current_time = time.monotonic()
         elapsed = current_time - self._start_time
