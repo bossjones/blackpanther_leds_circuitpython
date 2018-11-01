@@ -23,8 +23,11 @@ class PixelAnimator(nonblocking_timer):
         self.animator = self._getAnimator(PixelAnimator.LINEAR)
 
         # print("PixelAnimator Demo: pixel count = %s" % len(self.pixels))
-        print("Class = '{}' func = '__init__' len(self.pixels) = '{}'\n".format(
-            self.__qualname__, len(self.pixels)))
+        print(
+            "Class = '{}' func = '__init__' len(self.pixels) = '{}'\n".format(
+                self.__qualname__, len(self.pixels)
+            )
+        )
 
     def next(self):
         self.animator.next()
@@ -43,8 +46,11 @@ class _LinearAnimator(nonblocking_timer):
     def __init__(self, pixels, interval=0, steps=0):
         super(_LinearAnimator, self).__init__(interval / float(steps))
 
-        print("Class = '{}' func = '__init__' interval = '{}'\n".format(
-            self.__qualname__, interval))
+        print(
+            "Class = '{}' func = '__init__' interval = '{}'\n".format(
+                self.__qualname__, interval
+            )
+        )
 
         if interval <= 0:
             raise Exception("Interval must be > 0")

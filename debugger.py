@@ -1,6 +1,7 @@
 import gc
 import micropython  # pylint: disable=E0401
 
+
 def memorySnapshot(location=None):
     print("\n------memorySnapshot-----")
     if location:
