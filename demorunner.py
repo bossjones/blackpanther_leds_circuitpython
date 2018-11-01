@@ -1,15 +1,29 @@
 import gc
-import sys
+# gc.collect()
+# import time
 import board
-import time
-
+gc.collect()
+import sys
+gc.collect()
 # import demos
-import nightlight
+# import nightlight
+# gc.collect()
+# import rainbowdemo
+# gc.collect()
 
-import rainbowdemo
+import left_chest
+gc.collect()
+# import debugger
+# debugger.memorySnapshot()
+# currentDemo = left_chest.LeftUnit()
+# debugger.memorySnapshot()
+# currentDemo.start()
+# debugger.memorySnapshot()
+# currentDemo.next()
 
 # import blinkdemo
 from buttonwatcher import ButtonWatcher
+gc.collect()
 
 # FIXME: This import is causing 'MemoryError: memory allocation failed, allocating %u bytes'
 # import left_chest
@@ -18,8 +32,8 @@ import exceptions
 
 index = 0
 demos = [
-    # left_chest.FlashDemo(),
-    nightlight.NightLight(),
+    left_chest.LeftUnit(),
+    # nightlight.NightLight(),
     # blinkdemo.FlashDemo(),
     # rainbowdemo.RainbowDemo(),
     # rainbowdemo.RainbowCycleDemo(),
