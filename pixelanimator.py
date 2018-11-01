@@ -39,9 +39,11 @@ class PixelAnimator(nonblocking_timer):
 class _LinearAnimator(nonblocking_timer):
     def __init__(self, pixels, interval=0, steps=0):
         super(_LinearAnimator, self).__init__(interval / float(steps))
-        print("DEBUG: _LinearAnimator.interval = {}".format(interval))
+
+        print("Class = '{}' func = '__init__' interval = '{}'\n".format(
+            self.__qualname__, interval))
+
         if interval <= 0:
-            print("yeah it failed here: _LinearAnimator")
             raise Exception("Interval must be > 0")
         if steps <= 0:
             raise Exception("Steps must be > 0")

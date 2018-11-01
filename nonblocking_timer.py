@@ -75,7 +75,7 @@ class nonblocking_timer(object):
         Initial state is _STOPPED.
         Call start() to set status to _RUNNING.
         """
-        print("Class = '{}' __init__.interval = '{}'".format(self.__qualname__, interval))
+        print("Class = '{}' func = '__init__' __init__.interval = '{}'\n".format(self.__qualname__, interval))
         self._interval = interval
         self._status = nonblocking_timer._STOPPED
         self._start_time = 0
@@ -95,6 +95,7 @@ class nonblocking_timer(object):
     """
 
         if self._interval <= 0:
+            print("Class = '{}' func = 'next' __init__.interval = '{}'\n".format(self.__qualname__, self._interval))
             raise RuntimeError("Interval must be > 0")
 
         if self._status != nonblocking_timer._RUNNING:
@@ -120,6 +121,8 @@ class nonblocking_timer(object):
        next() repeatedly to determine if the timer has been triggered.
        If interval <= 0 raise a RuntimeError """
         if self._interval <= 0:
+            print("Class = '{}' func = 'start' self._interval = '{}'\n".format(
+                self.__qualname__, self._interval))
             raise RuntimeError("Interval must be > 0")
 
         self._start_time = time.monotonic()
@@ -129,7 +132,9 @@ class nonblocking_timer(object):
         """ Set the trigger interval time in seconds (float). If interval <= 0
         raise a RuntimeError """
         if seconds <= 0:
-            raise RuntimeError("Interval must be > 0")
+            print("Class = '{}' func = 'set_interval' seconds = '{}'\n".format(
+                self.__qualname__, seconds))
+            raise RuntimeError("Debug: func = 'set_interval' msg = 'Seconds interval must be > 0'")
         self._interval = seconds
 
     def get_interval(self):
