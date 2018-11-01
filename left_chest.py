@@ -189,9 +189,6 @@ class _RunningLightsAnimator(nonblocking_timer):
                 self._current_pixel,
             )
         )
-        # print('-------------------------')
-        # debugger.dump(self)
-        # print('-------------------------')
 
         # step1: check if we move to position++ or do we stay where we are at
         if self._position_state == _RunningLightsAnimator.STAY_AT_POSITION:
@@ -208,7 +205,10 @@ class _RunningLightsAnimator(nonblocking_timer):
                     print(
                         "step3: check if (_current_pixel < num_pixels) AKA (j < num_pixels)"
                     )
+
                     self._pixels[self._current_pixel] = self.performSinMath(PURPLE)
+
+                    self._pixels.show()
 
                     print(
                         "Class = '{}' func = 'next' self._current_pixel = '{}' self._pixels[self._current_pixel] = '{}'\n".format(
