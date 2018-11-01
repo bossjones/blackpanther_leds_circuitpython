@@ -1,8 +1,11 @@
 import gc
+import sys
 import board
 import time
+
 # import demos
 import nightlight
+
 # import rainbowdemo
 # import blinkdemo
 from buttonwatcher import ButtonWatcher
@@ -38,7 +41,7 @@ try:
 
         index %= len(demos)
 
-        if (previousIndex != index):
+        if previousIndex != index:
             for demo in demos:
                 demo.stop()
             currentDemo = demos[index]
@@ -48,9 +51,11 @@ try:
         time.sleep(0.001)
 except MemoryError as error:
     # Output unexpected MemoryErrors.
-    exceptions.log_exception(error, False)
+    sys.print_exception(error)
+    raise
 except RuntimeError as error:
     # Output unexpected RuntimeError.
-    exceptions.log_exception(error, False)
+    sys.print_exception(error)
+    raise
 except KeyboardInterrupt as exception:
     pass

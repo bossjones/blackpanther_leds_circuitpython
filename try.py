@@ -162,7 +162,6 @@ def _setPixel(position, r, g, b):
 
     print("INSIDE: AFTER (int) cast _setPixel: r={}, g={}, b={}".format(r, g, b))
 
-
     # _rgb = (r, g, b) if ORDER == neopixel.RGB or ORDER == neopixel.GRB else (r, g, b, 0)
     # pixels[position] = _rgb
     # # time.sleep(0.1)
@@ -200,7 +199,8 @@ def _FadeInOut(red, green, blue):
         print("BEFORE - INSIDE: _FadeInOut FIRST LOOP: k={}".format(k))
         print(
             "BEFORE - INSIDE: _FadeInOut FIRST LOOP: red={}, green={}, blue={}".format(
-                red, green, blue)
+                red, green, blue
+            )
         )
 
         r = float((k / 256.0) * red)
@@ -208,7 +208,8 @@ def _FadeInOut(red, green, blue):
         b = float((k / 256.0) * blue)
         print(
             "AFTER - INSIDE: _FadeInOut FIRST LOOP: red={}, green={}, blue={}".format(
-                red, green, blue)
+                red, green, blue
+            )
         )
         print("AFTER - INSIDE: _FadeInOut FIRST LOOP: r={}, g={}, b={}".format(r, g, b))
         _setAll(r, g, b)
@@ -260,20 +261,18 @@ def _RunningLights(red, green, blue, WaveDelay):
             g = ((math.sin(j + position) * 127 + 128) / 255) * green
             b = ((math.sin(j + position) * 127 + 128) / 255) * blue
 
-            print("INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b))
-
-            _setPixel(
-                j,
-                r,
-                g,
-                b,
+            print(
+                "INSIDE: _RunningLights SECOND LOOP: r={}, g={}, b={}".format(r, g, b)
             )
+
+            _setPixel(j, r, g, b)
 
             j = j + 1
 
         _showStrip()
         _delay(WaveDelay)
         i = i + 1
+
 
 if __name__ == "__main__":
     _RunningLights(0xff, 0xff, 0x00, 5)
