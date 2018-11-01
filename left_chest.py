@@ -49,8 +49,12 @@ def dump(obj):
 
 
 class LeftUnit(nonblocking_timer):
-    def __init__(self):
-        super(LeftUnit, self).__init__(0.25)
+    # NOTE: The interval here controls the speed at which the whole animation moves at
+    # Interval suggestions:
+    #   default: 0.25
+    #   slow: 1
+    def __init__(self, interval=0.09):
+        super(LeftUnit, self).__init__(interval)
         self._left_chest_pixels = neopixel.NeoPixel(
             board.NEOPIXEL, 10, auto_write=False, pixel_order=neopixel.GRB
         )
@@ -295,7 +299,7 @@ class PixelAnimatorNG(nonblocking_timer):
 
 class _ColorWipeAnimator(nonblocking_timer):
     def __init__(self, pixels, interval=0):
-        super(_ColorWipeAnimator, self).__init__(interval / float(50))
+        super(_ColorWipeAnimator, self).__init__(interval)
 
         print(
             "Class = '{}' func = '__init__' interval = '{}'\n".format(
