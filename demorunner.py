@@ -9,7 +9,8 @@ import nightlight
 import rainbowdemo
 # import blinkdemo
 from buttonwatcher import ButtonWatcher
-import left_chest
+# FIXME: This import is causing 'MemoryError: memory allocation failed, allocating %u bytes'
+# import left_chest
 import exceptions
 
 
@@ -17,12 +18,12 @@ index = 0
 demos = [
     # left_chest.FlashDemo(),
 
-    # nightlight.NightLight(),
+    nightlight.NightLight(),
 
 
     # blinkdemo.FlashDemo(),
     # rainbowdemo.RainbowDemo(),
-    rainbowdemo.RainbowCycleDemo(),
+    # rainbowdemo.RainbowCycleDemo(),
     # blinkdemo.BlinkDemo(),
     # demos.TouchDemo(),
 ]
