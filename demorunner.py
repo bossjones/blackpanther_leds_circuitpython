@@ -6,7 +6,7 @@ import time
 # import demos
 import nightlight
 
-# import rainbowdemo
+import rainbowdemo
 # import blinkdemo
 from buttonwatcher import ButtonWatcher
 import left_chest
@@ -17,12 +17,12 @@ index = 0
 demos = [
     # left_chest.FlashDemo(),
 
-    nightlight.NightLight(),
+    # nightlight.NightLight(),
 
 
     # blinkdemo.FlashDemo(),
     # rainbowdemo.RainbowDemo(),
-    # rainbowdemo.RainbowCycleDemo(),
+    rainbowdemo.RainbowCycleDemo(),
     # blinkdemo.BlinkDemo(),
     # demos.TouchDemo(),
 ]
