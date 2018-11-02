@@ -3,6 +3,7 @@ from nonblocking_timer import nonblocking_timer
 PURPLE = (0x10, 0, 0x10)
 BLACK = (0, 0, 0)
 OFF = BLACK
+BLACK_PANTHER_PURPLE = (198, 0, 224)  # rgb(198, 0, 224)
 
 # FIXME: Move this into the pixelanimator.py when verified
 class PixelAnimatorNG(nonblocking_timer):
@@ -15,6 +16,8 @@ class PixelAnimatorNG(nonblocking_timer):
         super(PixelAnimatorNG, self).__init__()
         self.pixels = pixels
         self.animator = self._getAnimator(PixelAnimatorNG.COLORWIPE)
+        # self.animator = self._getAnimator(PixelAnimatorNG.LINEAR)
+        self.animator.start()
         print("PixelAnimatorNG Demo: pixel count = %s" % len(self.pixels))
 
     def next(self):
@@ -53,12 +56,14 @@ class PixelAnimatorNG(nonblocking_timer):
     def _getAnimator(self, animation_type):
         if animation_type == PixelAnimatorNG.LINEAR:
             #   return _RunningLightsAnimator(self.pixels, interval=1, steps=50)
-            raise Exception("Not implemented animator: %s" % animation_type)
+            # return _LinearAnimator(self.pixels, interval=1, steps=50)
+            raise Exception(
+                "Not implemented animator: {}".format(animation_type))
         # elif animation_type == PixelAnimatorNG.RUNNINGLIGHTS:
         #     return _RunningLightsAnimator(self.pixels, interval=1)
         elif animation_type == PixelAnimatorNG.COLORWIPE:
             return _ColorWipeAnimator(self.pixels, interval=1)
-        raise Exception("Unknown animator: %s" % animation_type)
+        raise Exception("Unknown animator: {}".format(animation_type))
 
 
 # class _RunningLightsAnimator(nonblocking_timer):
@@ -244,3 +249,39 @@ class _ColorWipeAnimator(nonblocking_timer):
     def stop(self):
         self._pixels.fill((0, 0, 0))
         self._pixels.show()
+
+
+# class _LinearAnimator(nonblocking_timer):
+#   def __init__(self, pixels, interval=0, steps=0):
+#     super(_LinearAnimator, self).__init__(interval / float(steps))
+#     # if interval <= 0:
+#     #     raise Exception('Interval must be > 0')
+#     # if steps <= 0:
+#     #     raise Exception('Steps must be > 0')
+#     self._steps = steps
+#     self._pixels = pixels
+#     self._color = OFF
+#     self._increasing = True
+#     self._currentColor = OFF
+#     self._currentStep = 0
+#     self._deltaColor = tuple(map(lambda x: x / float(steps), BLACK_PANTHER_PURPLE))
+
+#   def next(self):
+#     if (super(_LinearAnimator, self).next()):
+#       if self._increasing:
+#         self._color = tuple(
+#             map(lambda x, y: min(x + y, 255),
+#                 self._color, self._deltaColor))
+#       else:
+#         self._color = tuple(
+#             map(lambda x, y: max(x - y, 0),
+#                 self._color, self._deltaColor))
+
+#       self._pixels.fill(tuple(
+#           map(lambda x: int(round(x)), self._color)))
+#       self._pixels.show()
+#       print("color: %s step: %s", self._color, self._currentStep)
+#       self._currentStep += 1
+#       if (self._currentStep > self._steps):
+#         self._currentStep = 0
+#         self._increasing = not self._increasing

@@ -55,19 +55,22 @@ class LeftUnit(nonblocking_timer):
         self._left_chest_index = 0
         # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
         self._left_chest_animator = pixelanimator.PixelAnimatorNG(self._left_chest_pixels)
+        # self._left_chest_animator.start()
 
         # # ------- Left rib unit ------------------
-        # self._left_rib_pixels = neopixel.NeoPixel(
-        #     board.A7,
-        #     7,
-        #     auto_write=False,
-        #     pixel_order=neopixel.GRB
-        # )
-        # self._left_rib_pixels.fill((0, 0, 0))
-        # self._left_rib_pixels.show()
-        # self._left_rib_index = 0
-        # # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
-        # self._left_rib_animator = PixelAnimatorNG(self._left_rib_pixels)
+        self._left_rib_pixels = neopixel.NeoPixel(
+            board.A7,
+            8,
+            auto_write=False,
+            pixel_order=neopixel.GRB
+        )
+        self._left_rib_pixels.fill((0, 0, 0))
+        self._left_rib_pixels.show()
+        self._left_rib_index = 0
+        # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
+        self._left_rib_animator = pixelanimator.PixelAnimatorNG(
+            self._left_rib_pixels)
+        # self._left_rib_animator.start()
 
         # # ------- Left abs unit ------------------
         # self._left_abs_pixels = neopixel.NeoPixel(
@@ -80,20 +83,20 @@ class LeftUnit(nonblocking_timer):
         # self._left_abs_pixels.show()
         # self._left_abs_pixels_index = 0
         # # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
-        # self._left_abs_animator = PixelAnimatorNG(self._left_abs_pixels)
+        # self._left_abs_animator = pixelanimator.PixelAnimatorNG(self._left_abs_pixels)
 
     def next(self):
         if super(LeftUnit, self).next():
             self._left_chest_animator.next()
-            # self._left_rib_animator.next()
+            self._left_rib_animator.next()
             # self._left_abs_animator.next()
 
     def stop(self):
         self._left_chest_pixels.fill(BLACK)
         self._left_chest_pixels.show()
 
-        # self._left_rib_pixels.fill(BLACK)
-        # self._left_rib_pixels.show()
+        self._left_rib_pixels.fill(BLACK)
+        self._left_rib_pixels.show()
 
         # self._left_abs_pixels.fill(BLACK)
         # self._left_abs_pixels.show()
