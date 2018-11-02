@@ -28,6 +28,8 @@ cp-to-device:
 	rsync --verbose --update pixelanimator.py /Volumes/CIRCUITPY/
 	rsync --verbose --update rainbowdemo.py /Volumes/CIRCUITPY/
 	rsync --verbose --update blinkdemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update simpledemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update animation_utils.py /Volumes/CIRCUITPY/
 	rsync --verbose --update code.py /Volumes/CIRCUITPY/
 	@df -H /Volumes/CIRCUITPY/
 
@@ -42,5 +44,7 @@ rm-device:
 	rm -fv /Volumes/CIRCUITPY/pixelanimator.py
 	rm -fv /Volumes/CIRCUITPY/rainbowdemo.py
 	rm -fv /Volumes/CIRCUITPY/blinkdemo.py
+	rm -fv /Volumes/CIRCUITPY/animation_utils.py
+	rm -fv /Volumes/CIRCUITPY/simpledemo.py
 
 clean: rm-device
