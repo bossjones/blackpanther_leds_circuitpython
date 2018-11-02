@@ -445,3 +445,4 @@ obj._left_abs_pixels = [(0, 0, 0), (0, 0, 0), (0, 0, 0),
                         (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0), (0, 0, 0)]
 obj._left_rib_animator = <PixelAnimatorNG object at 20002a10 >
 ```
+

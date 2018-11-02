@@ -28,38 +28,45 @@ rainbowCycleDemo = True
 # 0 = rgb(255, 0, 0)
 #
 # NOTE: RED WHEEL ONLY
-# def wheel(pos):
-#     # print("func = 'wheel' pos='{}'".format(pos))
-#     # pos = 255 - pos
-#     # Input a value 0 to 255 to get a color value.
-#     # The colours are a transition r - g - b - back to r.
-#     if pos < 85:
-#         # 0 = rgb(0,0,0)
-#         # 1 = rgb(252,0,0)
-#         # 84 = rgb(3, 0, 0)
-#         rgb = (int(255 - (pos*3)), 0, 0)
-#         # print("Inside: pos < 85 ... pos = '{}' rgb = 'rgb{}'".format(pos, rgb))
-#         print("rgb{}".format(rgb))
-#         return rgb
-#     elif pos < 170:
-#         # 85 = rgb(0,0,0)
-#         # 170 = rgb(0,0,0)
-#         # print("Inside: BEFORE pos -=85 pos < 170 ... pos = '{}'".format(pos))
-#         pos -= 85
-#         rgb = (0, 0, 0)
-#         # print("Inside: AFTER pos -=85 pos < 170 ... pos = '{}' rgb = 'rgb{}'".format(pos, rgb))
-#         print("rgb{}".format(rgb))
-#         return rgb
-#     else:
-#         # 171 = rgb(3, 0, 0)
-#         # 255 = rgb(255, 0, 0) # NOTE: 255 becomes 85
-#         # print("Inside: BEFORE pos -= 170 ... pos > 170 ... pos = '{}'".format(pos))
-#         pos -= 170
-#         rgb = (int(pos*3), 0, 0)
-#         # print("Inside: AFTER pos > 170 ... pos = '{}' rgb = 'rgb{}'".format(pos, rgb))
-#         print("rgb{}".format(rgb))
-#         return rgb
+def wheel(pos):
+    # print("func = 'wheel' pos='{}'".format(pos))
+    # pos = 255 - pos
+    # Input a value 0 to 255 to get a color value.
+    # The colours are a transition r - g - b - back to r.
+    if pos < 85:
+        # 0 = rgb(0,0,0)
+        # 1 = rgb(252,0,0)
+        # 84 = rgb(3, 0, 0)
+        rgb = (int(255 - (pos*3)), 0, 0)
+        # print("Inside: pos < 85 ... pos = '{}' rgb = 'rgb{}'".format(pos, rgb))
+        print("rgb{}".format(rgb))
+        return rgb
+    elif pos < 170:
+        # 85 = rgb(0,0,0)
+        # 170 = rgb(0,0,0)
+        # print("Inside: BEFORE pos -=85 pos < 170 ... pos = '{}'".format(pos))
+        pos -= 85
+        rgb = (0, 0, 0)
+        # print("Inside: AFTER pos -=85 pos < 170 ... pos = '{}' rgb = 'rgb{}'".format(pos, rgb))
+        print("rgb{}".format(rgb))
+        return rgb
+    else:
+        # 171 = rgb(3, 0, 0)
+        # 255 = rgb(255, 0, 0) # NOTE: 255 becomes 85
+        # print("Inside: BEFORE pos -= 170 ... pos > 170 ... pos = '{}'".format(pos))
+        pos -= 170
+        rgb = (int(pos*3), 0, 0)
+        # print("Inside: AFTER pos > 170 ... pos = '{}' rgb = 'rgb{}'".format(pos, rgb))
+        print("rgb{}".format(rgb))
+        return rgb
 
+
+# def map_range(x, in_min, in_max, out_min, out_max):
+#     # Maps a number from one range to another.
+#     mapped = (x-in_min) * (out_max - out_min) / (in_max-in_min) + out_min
+#     if out_min <= out_max:
+#         return max(min(mapped, out_max), out_min)
+#     return min(max(mapped, out_max), out_min)
 
 # 13 = (39, 0, 0)
 # high color rgb(208,0,255)
@@ -69,45 +76,49 @@ rainbowCycleDemo = True
 # 3. Plug and play w/ values till we can figure out what gets us to the numer we care about
 
 # PURPLE wheel
-def wheel(pos):
-    # print("func = 'wheel' pos='{}'".format(pos))
-    # pos = 255 - pos
-    # Input a value 0 to 255 to get a color value.
-    # The colours are a transition r - g - b - back to r.
-    if pos < 85:
-        # 0 = rgb(0,0,0)
-        # 1 = rgb(150, 0, 255)
-        # 84 = rgb(3, 0, 0)
-        # 79
-        # 0 -> 84
-        # pos += 15
-        # red_offset =
-        # blue_offset =
-        # pos += 20
-        pos += 34
-        # offset = 34
-        rgb = (int(255 - (pos*3)), 0, int(255 - (pos*3)))
-        # print("Inside: pos < 85 ... pos = '{}' rgb = '{}'".format(pos, rgb))
-        print("rgb{}".format(rgb))
-        return rgb
-    elif pos < 170:
-        # 84 -> 169
-        pos -= 85
-        rgb = (0, 0, 0)
-        # print("Inside: pos < 170 ... pos = '{}' rgb = '{}'".format(pos, rgb))
-        print("rgb{}".format(rgb))
-        return rgb
-    else:
-        # 171 -> 255
-        # pos -= 170
-        # pos -= 155
-        # 171 = rgb(3, 0, 0)
-        # 255 = rgb(255, 0, 255) # NOTE: 255 becomes 85
-        pos -= 170
-        rgb = (int(pos*3), 0, int(pos*3))
-        # print("Inside: pos < 170 ... pos = '{}' rgb = '{}'".format(pos, rgb))
-        print("rgb{}".format(rgb))
-        return rgb
+# def wheel(pos):
+#     # print("func = 'wheel' pos='{}'".format(pos))
+#     # pos = 255 - pos
+#     # Input a value 0 to 255 to get a color value.
+#     # The colours are a transition r - g - b - back to r.
+#     if pos < 85:
+#         # 0 = rgb(0,0,0)
+#         # 1 = rgb(198, 0, 255)
+#         # 84 = rgb(3, 0, 0)
+#         # 79
+#         # 0 -> 84
+#         # pos += 15
+#         # red_offset =
+#         # blue_offset =
+#         # pos += 20
+#         # pos += 34  # NOT BAD!
+#         pos += 18
+#         # offset = 34
+#         # rgb = (int(255 - (pos*3)), 0, int(255 - (pos*3)))
+#         # rgb = (abs(int(255 - (pos*3))), 0, int(255))
+#         rgb = (abs(int(255 - (pos*3))), 0, abs(int(pos*3)))
+#         # print("Inside: pos < 85 ... pos = '{}' rgb = '{}'".format(pos, rgb))
+#         print("rgb{}".format(rgb))
+#         return rgb
+#     elif pos < 170:
+#         # 84 -> 169
+#         pos -= 85
+#         rgb = (0, 0, 0)
+#         # print("Inside: pos < 170 ... pos = '{}' rgb = '{}'".format(pos, rgb))
+#         print("rgb{}".format(rgb))
+#         return rgb
+#     else:
+#         # 171 -> 255
+#         # pos -= 170
+#         # pos -= 155
+#         # 171 = rgb(3, 0, 0)
+#         # 255 = rgb(255, 0, 255) # NOTE: 255 becomes 85
+#         pos -= 170
+#         rgb = (abs(int(pos*3)), 0, abs(int(pos*3)))
+#         # rgb = (abs(int(255 - (pos*3))), 0, int(pos*3))
+#         # print("Inside: pos < 170 ... pos = '{}' rgb = '{}'".format(pos, rgb))
+#         print("rgb{}".format(rgb))
+#         return rgb
 
 # purpleish
 # rgb(184,38,174)
@@ -174,7 +185,11 @@ def rainbow_cycle(wait):
     for j in range(255):
         for i in range(len(pixels)):
             idx = int((i * 256 / len(pixels)) + j*10)
-            pixels[i] = wheel(idx & 255)
+            print("idx value: {}".format(idx))
+            wheel_pos = idx & 255
+            # pixels[i] = wheel(idx & 255) ORIGINAL!!!!
+            print("wheel value: {}".format(wheel_pos))
+            pixels[i] = wheel(wheel_pos)
         pixels.show()
         time.sleep(wait)
 
