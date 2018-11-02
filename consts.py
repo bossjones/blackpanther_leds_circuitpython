@@ -1,3 +1,5 @@
+# Made with: http://www.perbang.dk/rgbgradient/
+
 GRADIENT = [
     "#C600E0",
     "#C200DB",
