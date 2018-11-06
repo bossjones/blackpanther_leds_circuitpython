@@ -73,23 +73,92 @@ class LeftUnit(nonblocking_timer):
         # self._left_rib_animator.start()
 
         # # ------- Left abs unit ------------------
-        # self._left_abs_pixels = neopixel.NeoPixel(
-        #     board.A2,
-        #     8,
-        #     auto_write=False,
-        #     pixel_order=neopixel.GRB
-        # )
-        # self._left_abs_pixels.fill((0, 0, 0))
-        # self._left_abs_pixels.show()
-        # self._left_abs_pixels_index = 0
-        # # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
-        # self._left_abs_animator = pixelanimator.PixelAnimatorNG(self._left_abs_pixels)
+        self._left_abs_pixels = neopixel.NeoPixel(
+            # board.A2,
+            board.A5,
+            8,
+            auto_write=False,
+            pixel_order=neopixel.GRB
+        )
+        self._left_abs_pixels.fill((0, 0, 0))
+        self._left_abs_pixels.show()
+        self._left_abs_pixels_index = 0
+        # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
+        self._left_abs_animator = pixelanimator.PixelAnimatorNG(self._left_abs_pixels)
+
+        #########################################################################
+        # New units that might cause a memory issue
+        #########################################################################
+
+        # # ------- Left upper_arm unit ------------------
+        self._left_upper_arm_pixels = neopixel.NeoPixel(
+            board.A6,
+            8,
+            auto_write=False,
+            pixel_order=neopixel.GRB
+        )
+        self._left_upper_arm_pixels.fill((0, 0, 0))
+        self._left_upper_arm_pixels.show()
+        self._left_upper_arm_pixels_index = 0
+        # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
+        self._left_upper_arm_animator = pixelanimator.PixelAnimatorNG(
+            self._left_upper_arm_pixels)
+
+        # # ------- Left elbow unit ------------------
+        self._left_elbow_pixels = neopixel.NeoPixel(
+            board.A1,
+            8,
+            auto_write=False,
+            pixel_order=neopixel.GRB
+        )
+        self._left_elbow_pixels.fill((0, 0, 0))
+        self._left_elbow_pixels.show()
+        self._left_elbow_pixels_index = 0
+        # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
+        self._left_elbow_animator = pixelanimator.PixelAnimatorNG(
+            self._left_elbow_pixels)
+
+        # # ------- Left center unit ------------------
+        self._left_center_pixels = neopixel.NeoPixel(
+            board.A4,
+            16,
+            auto_write=False,
+            pixel_order=neopixel.GRB
+        )
+        self._left_center_pixels.fill((0, 0, 0))
+        self._left_center_pixels.show()
+        self._left_center_pixels_index = 0
+        # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
+        self._left_center_animator = pixelanimator.PixelAnimatorNG(
+            self._left_center_pixels)
+
+        # # ------- Left thigh unit ------------------
+        self._left_thigh_pixels = neopixel.NeoPixel(
+            board.A3,
+            11,
+            auto_write=False,
+            pixel_order=neopixel.GRB
+        )
+        self._left_thigh_pixels.fill((0, 0, 0))
+        self._left_thigh_pixels.show()
+        self._left_thigh_pixels_index = 0
+        # FIXME: NOTE, we might need to make these local variables only, based on NightLight example
+        self._left_thigh_animator = pixelanimator.PixelAnimatorNG(
+            self._left_thigh_pixels)
 
     def next(self):
         if super(LeftUnit, self).next():
             self._left_chest_animator.next()
             self._left_rib_animator.next()
-            # self._left_abs_animator.next()
+            self._left_abs_animator.next()
+
+            #########################################################################
+            # New units that might cause a memory issue
+            #########################################################################
+            self._left_upper_arm_animator.next()
+            self._left_elbow_animator.next()
+            self._left_center_animator.next()
+            self._left_thigh_animator.next()
 
     def stop(self):
         self._left_chest_pixels.fill(BLACK)
@@ -98,5 +167,20 @@ class LeftUnit(nonblocking_timer):
         self._left_rib_pixels.fill(BLACK)
         self._left_rib_pixels.show()
 
-        # self._left_abs_pixels.fill(BLACK)
-        # self._left_abs_pixels.show()
+        self._left_abs_pixels.fill(BLACK)
+        self._left_abs_pixels.show()
+
+        #########################################################################
+        # New units that might cause a memory issue
+        #########################################################################
+        self._left_upper_arm_pixels.fill(BLACK)
+        self._left_upper_arm_pixels.show()
+
+        self._left_elbow_pixels.fill(BLACK)
+        self._left_elbow_pixels.show()
+
+        self._left_center_pixels.fill(BLACK)
+        self._left_center_pixels.show()
+
+        self._left_thigh_pixels.fill(BLACK)
+        self._left_thigh_pixels.show()
