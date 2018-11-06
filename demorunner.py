@@ -2,9 +2,7 @@ import gc
 
 import time
 # gc.collect()
-import board
-gc.collect()
-import sys
+# import board
 gc.collect()
 # import demos
 # import nightlight
@@ -16,8 +14,8 @@ import left_chest
 gc.collect()
 
 # import blinkdemo
-from buttonwatcher import ButtonWatcher
-gc.collect()
+# from buttonwatcher import ButtonWatcher
+# gc.collect()
 
 index = 0
 demos = [
@@ -33,35 +31,25 @@ demos = [
 currentDemo = demos[index]
 demos[index].start()
 
-buttonA = ButtonWatcher(board.BUTTON_A)
-buttonB = ButtonWatcher(board.BUTTON_B)
+# buttonA = ButtonWatcher(board.BUTTON_A)
+# buttonB = ButtonWatcher(board.BUTTON_B)
 
-try:
-    while True:
-        previousIndex = index
 
-        if buttonA.wasPressed():
-            index += 1
-        if buttonB.wasPressed():
-            index -= 1
+while True:
+    previousIndex = index
 
-        index %= len(demos)
+    # if buttonA.wasPressed():
+    #     index += 1
+    # if buttonB.wasPressed():
+    #     index -= 1
 
-        if previousIndex != index:
-            for demo in demos:
-                demo.stop()
-            currentDemo = demos[index]
-            currentDemo.start()
+    index %= len(demos)
 
-        currentDemo.next()
-        time.sleep(0.001)
-except MemoryError as error:
-    # Output unexpected MemoryErrors.
-    sys.print_exception(error)  # pylint: disable=E1101
-    raise
-except RuntimeError as error:
-    # Output unexpected RuntimeError.
-    sys.print_exception(error)  # pylint: disable=E1101
-    raise
-except KeyboardInterrupt as exception:
-    pass
+    if previousIndex != index:
+        for demo in demos:
+            demo.stop()
+        currentDemo = demos[index]
+        currentDemo.start()
+
+    currentDemo.next()
+    time.sleep(0.001)

@@ -7,8 +7,8 @@ from nonblocking_timer import nonblocking_timer
 gc.collect()
 import neopixel
 gc.collect()
-import math
-gc.collect()
+# import math
+# gc.collect()
 import pixelanimator
 gc.collect()
 
@@ -34,10 +34,10 @@ def memorySnapshot(location=None):
     print("\n")
 
 
-def dump(obj):
-    for attr in dir(obj):
-        if hasattr(obj, attr):
-            print("obj.{} = {}".format(attr, getattr(obj, attr)))
+# def dump(obj):
+#     for attr in dir(obj):
+#         if hasattr(obj, attr):
+#             print("obj.{} = {}".format(attr, getattr(obj, attr)))
 
 
 class LeftUnit(nonblocking_timer):
