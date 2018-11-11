@@ -76,7 +76,7 @@ class LeftUnit(nonblocking_timer):
         self._left_abs_pixels = neopixel.NeoPixel(
             # board.A2,
             board.A5,
-            8,
+            7,
             auto_write=False,
             pixel_order=neopixel.GRB
         )
