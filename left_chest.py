@@ -12,6 +12,9 @@ gc.collect()
 import pixelanimator
 gc.collect()
 
+# import digitalio
+# gc.collect()
+
 PURPLE = (0x10, 0, 0x10)
 BLACK = (0, 0, 0)
 OFF = BLACK
@@ -47,6 +50,11 @@ class LeftUnit(nonblocking_timer):
     #   slow: 1
     def __init__(self, interval=0.09):
         super(LeftUnit, self).__init__(interval)
+
+        # # Turn off power light
+        # self.green_light = digitalio.DigitalInOut(board.D13)
+        # self.green_light.value = False
+
         self._left_chest_pixels = neopixel.NeoPixel(
             board.NEOPIXEL, 10, auto_write=False, pixel_order=neopixel.GRB
         )

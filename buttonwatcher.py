@@ -15,6 +15,10 @@ class ButtonWatcher:
         self._button.pull = Pull.DOWN
         self._value = False
 
+        # Turn off power light
+        self.green_light = DigitalInOut(board.D13)
+        self.green_light.value = False
+
     def wasPressed(self):
         previousValue = self._value
         self._value = self._button.value
