@@ -48,3 +48,36 @@ rm-device:
 	rm -fv /Volumes/CIRCUITPY/simpledemo.py
 
 clean: rm-device
+
+
+left-cp-to-device:
+	rsync --verbose --update nonblocking_timer.py /Volumes/CIRCUITPY/
+	rsync --verbose --update left_chest.py /Volumes/CIRCUITPY/
+	rsync --verbose --update buttonwatcher.py /Volumes/CIRCUITPY/
+	rsync --verbose --update demorunner.py /Volumes/CIRCUITPY/
+	rsync --verbose --update helloworld.py /Volumes/CIRCUITPY/
+	rsync --verbose --update debugger.py /Volumes/CIRCUITPY/
+	rsync --verbose --update nightlight.py /Volumes/CIRCUITPY/
+	rsync --verbose --update pixelanimator.py /Volumes/CIRCUITPY/
+	rsync --verbose --update rainbowdemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update blinkdemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update simpledemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update animation_utils.py /Volumes/CIRCUITPY/
+	rsync --verbose --update code.py /Volumes/CIRCUITPY/
+	@df -H /Volumes/CIRCUITPY/
+
+right-cp-to-device:
+	rsync --verbose --update nonblocking_timer.py /Volumes/CIRCUITPY/
+	rsync --verbose --update right_chest.py /Volumes/CIRCUITPY/
+	rsync --verbose --update buttonwatcher.py /Volumes/CIRCUITPY/
+	rsync --verbose --update demorunner.py /Volumes/CIRCUITPY/
+	rsync --verbose --update helloworld.py /Volumes/CIRCUITPY/
+	rsync --verbose --update debugger.py /Volumes/CIRCUITPY/
+	rsync --verbose --update nightlight.py /Volumes/CIRCUITPY/
+	rsync --verbose --update pixelanimator.py /Volumes/CIRCUITPY/
+	rsync --verbose --update rainbowdemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update blinkdemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update simpledemo.py /Volumes/CIRCUITPY/
+	rsync --verbose --update animation_utils.py /Volumes/CIRCUITPY/
+	rsync --verbose --update code.py /Volumes/CIRCUITPY/
+	@df -H /Volumes/CIRCUITPY/
