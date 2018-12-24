@@ -43,7 +43,6 @@ __check_defined = \
 
 list_allowed_args := side_to_render
 
-
 list-serial-devices: ## ** List serial devices connected to laptop
 	ls /dev/tty.*
 
@@ -128,12 +127,16 @@ right-cp-to-device: ## ** (RIGHT CHEST) Copy all code that we use to run our bla
 render-demorunner-left: ## ** (LEFT CHEST) render demorunner.py using jinja2 templates for adafruit microcontroller
 	jinja2 \
 	-D render_left=True \
-	$(PROJECT_ROOT_DIR)/demorunner.py.j2 > demorunner-left.py
+	$(PROJECT_ROOT_DIR)/demorunner.py.j2 > demorunner.py
 
 render-demorunner-right: ## ** (RIGHT CHEST) render demorunner.py using jinja2 templates for adafruit microcontroller
 	jinja2 \
 	-D render_right=True \
-	$(PROJECT_ROOT_DIR)/demorunner.py.j2 > demorunner-right.py
+	$(PROJECT_ROOT_DIR)/demorunner.py.j2 > demorunner.py
+
+prepare-left: render-demorunner-left ## ** (LEFT CHEST) render demorunner.py using jinja2 templates for adafruit microcontroller
+
+prepare-right: render-demorunner-right ## ** (RIGHT CHEST) render demorunner.py using jinja2 templates for adafruit microcontroller
 
 #######################
 # How to create a local virtualenv to use with this Makefile, install deps like pytest, pylint, black, isort, autopep8, etc
@@ -254,11 +257,8 @@ BIN_ACTIVATE="${BIN_DIR}/activate"
 BIN_PYTHON="${BIN_DIR}/python"
 BIN_PIP="${BIN_DIR}/pip"
 BIN_ISORT="${BIN_DIR}/isort"
-# BIN_PYTEST="${BIN_DIR}/pytest"
-# BIN_SPHINX_START="${BIN_DIR}/sphinx-quickstart"
-# BIN_TWINE="${BIN_DIR}/twine"
-# BIN_TOX="${BIN_DIR}/tox"
-# BIN_JUPYTER="${BIN_DIR}/jupyter"
+BIN_BLACK="${BIN_DIR}/black"
+BIN_JINJA="${BIN_DIR}/jinja2"
 
 PY_VERSION="${PY_VER_MAJOR}.${PY_VER_MINOR}.${PY_VER_MICRO}"
 
@@ -292,17 +292,17 @@ info: ## ** Show information about python, pip in this environment
 
 #--- Virtualenv ---
 .PHONY: brew_install_pyenv
-brew_install_pyenv: ## Install pyenv and pyenv-virtualenv
+brew_install_pyenv: ## ** Install pyenv and pyenv-virtualenv
 	-brew install pyenv
 	-brew install pyenv-virtualenv
 
 .PHONY: setup_pyenv
-setup_pyenv: brew_install_pyenv enable_pyenv ## Do some pre-setup for pyenv and pyenv-virtualenv
+setup_pyenv: brew_install_pyenv enable_pyenv ## ** Do some pre-setup for pyenv and pyenv-virtualenv
 	pyenv install ${PY_VERSION} -s
 	pyenv rehash
 
 .PHONY: init_venv
-init_venv: ## Initiate Virtual Environment
+init_venv: ## ** Initiate Virtual Environment
 ifeq (${USE_PYENV}, "Y")
 	# Install pyenv
 	#-brew install pyenv
@@ -359,7 +359,7 @@ install: uninstall ## ** Install This Package via setup.py
 	${BIN_PIP} install -r requirements.txt
 
 .PHONY: dev_dep
-dev_dep: ## Install Development Dependencies
+dev_dep: ## ** Install Development Dependencies
 	( \
 		cd ${PROJECT_ROOT_DIR}; \
 		${BIN_PIP} install -r requirements.txt; \
