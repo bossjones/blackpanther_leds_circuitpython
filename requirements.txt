@@ -5,8 +5,9 @@
 #    pip-compile --output-file requirements.txt requirements.in
 #
 autopep8==1.4.2
-jinja2==2.10              # via ansible
+Jinja2==2.10              # via ansible
 pyyaml==3.13              # via ansible, ansible-lint, pyaml
 black
 pylint
 isort
+jinja2-cli[yaml]

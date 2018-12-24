@@ -10,13 +10,13 @@ gc.collect()
 # import rainbowdemo
 # gc.collect()
 
-{% if side_to_render is 'left' %}
+{% if render_left is defined %}
 # COMMENT THIS IN WHEN YOU WANT TO PROGRAM THE LEFT HAND SIDE
-# import left_chest
-# gc.collect()
+import left_chest
+gc.collect()
 {% endif %}
 
-{% if side_to_render is 'right' %}
+{% if render_right is defined %}
 # COMMENT THIS IN WHEN YOU WANT TO PROGRAM THE RIGHT HAND SIDE
 import right_chest
 gc.collect()
@@ -28,9 +28,9 @@ gc.collect()
 
 index = 0
 demos = [
-{% if side_to_render is 'left' %}
+{%- if render_left is defined %}
     left_chest.LeftUnit(),
-{% else %}
+{%- else %}
     right_chest.RightUnit(),
 {% endif %}
     # nightlight.NightLight(),

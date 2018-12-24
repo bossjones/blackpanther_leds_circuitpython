@@ -126,14 +126,14 @@ right-cp-to-device: ## ** (RIGHT CHEST) Copy all code that we use to run our bla
 	@df -H /Volumes/CIRCUITPY/
 
 render-demorunner-left: ## ** (LEFT CHEST) render demorunner.py using jinja2 templates for adafruit microcontroller
-	@jinja2 \
-	-D side_to_render='left' \
-	demorunner.py.j2 > demorunner-left.py
+	jinja2 \
+	-D render_left=True \
+	$(PROJECT_ROOT_DIR)/demorunner.py.j2 > demorunner-left.py
 
 render-demorunner-right: ## ** (RIGHT CHEST) render demorunner.py using jinja2 templates for adafruit microcontroller
-	@jinja2 \
-	-D side_to_render='right' \
-	demorunner.py.j2 > demorunner-right.py
+	jinja2 \
+	-D render_right=True \
+	$(PROJECT_ROOT_DIR)/demorunner.py.j2 > demorunner-right.py
 
 #######################
 # How to create a local virtualenv to use with this Makefile, install deps like pytest, pylint, black, isort, autopep8, etc
