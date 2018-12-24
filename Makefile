@@ -95,9 +95,39 @@ right-cp-to-device:
 render-demorunner-left:
 	@jinja2 \
 	-D side_to_render='left' \
-	demorunner.py.j2 > demorunner.py
+	demorunner.py.j2 > demorunner-left.py
 
 render-demorunner-right:
 	@jinja2 \
 	-D side_to_render='right' \
-	demorunner.py.j2 > demorunner.py
+	demorunner.py.j2 > demorunner-right.py
+
+#######################
+# How to create a local virtualenv to use with this Makefile, install deps like pytest, pylint, black, isort, autopep8, etc
+# SOURCE: https://github.com/alanfranz/docker-rpm-builder/blob/v1dev/Makefile
+#######################
+
+# .PHONY: test integrationtest testexample clean distclean cleanexample install increase_minor_version upgrade freeze
+
+# PYTHON ?= $(shell which python)
+# VIRTUALENV ?= $(shell which virtualenv) -p $(PYTHON)
+# SHELL := /bin/bash
+# SRC_ROOT = drb
+# FIND := $(shell which gfind || which find)
+
+# devenv: setup.py requirements.txt
+# 	test -r devenv/bin/activate || $(VIRTUALENV) devenv || rm -rf devenv
+# 	touch -t 197001011200 devenv
+# 	source devenv/bin/activate && python devenv/bin/pip install -r requirements.txt && python devenv/bin/pip install --editable . --no-deps && python devenv/bin/pip check
+# 	touch devenv
+
+# # WARNING: this will freeze the CURRENT DEVELOPMENT ENVIRONMENT. Think twice if you've tinkered with it.
+# freeze: devenv
+# 	source devenv/bin/activate && python devenv/bin/pip freeze | grep -v "docker-rpm-builder" > requirements.txt
+
+# upgrade: devenv
+# 	source devenv/bin/activate && python devenv/bin/pip install --editable . --upgrade
+
+# test: devenv
+# 	devenv/bin/python -m unittest discover -v
+# 	$(FIND) $(SRC_ROOT) -type f -name '*.py' | { ! xargs grep -H $$'\t' ; } || { echo 'found tabs in some py file' ; exit 1 ; }
