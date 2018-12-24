@@ -2,6 +2,16 @@
 DEVICENAME := $(shell ls /dev/tty.*| grep "tty.usbmodem" | awk '{print $1}')
 BAUD_RATE := 115200
 
+# verify that certain variables have been defined off the bat
+check_defined = \
+	$(foreach 1,$1,$(__check_defined))
+__check_defined = \
+	$(if $(value $1),, \
+	  $(error Undefined $1$(if $(value 2), ($(strip $2)))))
+
+list_allowed_args := side_to_render
+
+
 list-serial-devices:
 	ls /dev/tty.*
 
@@ -81,3 +91,13 @@ right-cp-to-device:
 	rsync --verbose --update animation_utils.py /Volumes/CIRCUITPY/
 	rsync --verbose --update code.py /Volumes/CIRCUITPY/
 	@df -H /Volumes/CIRCUITPY/
+
+render-demorunner-left:
+	@jinja2 \
+	-D side_to_render='left' \
+	demorunner.py.j2 > demorunner.py
+
+render-demorunner-right:
+	@jinja2 \
+	-D side_to_render='right' \
+	demorunner.py.j2 > demorunner.py

@@ -10,13 +10,17 @@ gc.collect()
 # import rainbowdemo
 # gc.collect()
 
+{% if side_to_render is 'left' %}
 # COMMENT THIS IN WHEN YOU WANT TO PROGRAM THE LEFT HAND SIDE
 # import left_chest
 # gc.collect()
+{% endif %}
 
+{% if side_to_render is 'right' %}
 # COMMENT THIS IN WHEN YOU WANT TO PROGRAM THE RIGHT HAND SIDE
 import right_chest
 gc.collect()
+{% endif %}
 
 # import blinkdemo
 # from buttonwatcher import ButtonWatcher
@@ -24,8 +28,11 @@ gc.collect()
 
 index = 0
 demos = [
-    # left_chest.LeftUnit(),
+{% if side_to_render is 'left' %}
+    left_chest.LeftUnit(),
+{% else %}
     right_chest.RightUnit(),
+{% endif %}
     # nightlight.NightLight(),
     # blinkdemo.FlashDemo(),
     # rainbowdemo.RainbowDemo(),
