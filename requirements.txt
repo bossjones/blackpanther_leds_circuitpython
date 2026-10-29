@@ -6,7 +6,7 @@
 #
 autopep8==1.4.2
 Jinja2==2.10              # via ansible
-pyyaml==3.13              # via ansible, ansible-lint, pyaml
+pyyaml==5.4              # via ansible, ansible-lint, pyaml
 black
 pylint
 isort
